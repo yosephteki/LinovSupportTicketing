@@ -1,0 +1,46 @@
+/**
+ * 
+ */
+package LinovSupport.Ticketing.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * @author Yosep Teki
+ *
+ */
+@Entity
+@Table(name = "tbl_gambar")
+public class Gambar {
+
+	@Id
+	@Column(name = "id_gambar")
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	private String idGambar;
+
+	@Column(name = "gambar")
+	private byte[] gambar;
+
+	public String getIdGambar() {
+		return idGambar;
+	}
+
+	public void setIdGambar(String idGambar) {
+		this.idGambar = idGambar;
+	}
+
+	public byte[] getGambar() {
+		return gambar;
+	}
+
+	public void setGambar(byte[] gambar) {
+		this.gambar = gambar;
+	}
+}
