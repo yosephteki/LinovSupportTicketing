@@ -39,22 +39,30 @@ public class MultiController {
 	public ResponseEntity<?> create(@RequestBody Multi multi)throws ErrorException{
 		String msg;
 		try {
+			
 			Agen agen = new Agen();
-			User user = new User();
-
-			user.setUsername(multi.getUsername());
-			user.setPassword(multi.getPassword());
-			user.setIdRole(multi.getIdRole());
-			agen.setIdAgent(multi.getId());
-			agen.setAccount(multi.getIdAcc());
+			
+			agen.setIdAgen(multi.getId());
+			agen.setAccount(multi.getAccount());
 			agen.setEmail(multi.getEmail());
-			agen.setNama(multi.getNama());
 			agen.setActive(multi.isActive());
+			agen.setNama(multi.getNama());
 			
 			agenService.insertAgen(agen);
-			userService.create(user);
+			Agen newAgen = new Agen();
+			newAgen = agenService.findByBK(multi.getAccount(),multi.getEmail());
+			
+//			User user = new User();
+//			user.setUsername(multi.getUsername());
+//			user.setPassword(multi.getPassword());
+//			user.setIdRole(multi.getIdRole());
+		
+//			user.setDetailRole(newAgen.getIdAgen());
+			
+//			userService.create(user);
+			
 			msg="success";
-			return ResponseEntity.ok(msg);
+			return ResponseEntity.ok(newAgen);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

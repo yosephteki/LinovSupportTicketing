@@ -12,7 +12,7 @@ public class Multi {
 	private String password;
 	private String idRole;
 	private String id;
-	private Account idAcc;
+	private Account account;
 //	private String idAcc;
 	private String email;
 	private String nama;
@@ -43,11 +43,11 @@ public class Multi {
 		this.id = id;
 	}
 	
-	public Account getIdAcc() {
-		return idAcc;
+	public Account getAccount() {
+		return account;
 	}
-	public void setIdAcc(Account idAcc) {
-		this.idAcc = idAcc;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	public String getEmail() {
 		return email;

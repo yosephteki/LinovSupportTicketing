@@ -9,6 +9,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import LinovSupport.Ticketing.model.Account;
 import LinovSupport.Ticketing.model.Agen;
 /**
  * @author Yosep Teki
@@ -20,7 +22,9 @@ public class AgenDao extends CommonDao{
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Agen findById(String id){
-		List<Agen> list = super.entityManager.createQuery("FROM Agent WHERE idAgent=:id").setParameter("id", id)
+		List<Agen> list = super.entityManager
+				.createQuery("FROM Agent WHERE idAgent=:id")
+				.setParameter("id", id)
 				.getResultList();
 		if (list.size() > 0) {
 			return list.get(0);
@@ -30,9 +34,12 @@ public class AgenDao extends CommonDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Agen findByBk(String bk1, String bk2) {
-		List<Agen> list = super.entityManager.createQuery("FROM Agent WHERE idAccount=:idacc AND email=:email")
-				.setParameter("idacc", bk1).setParameter("email", bk2).getResultList();
+	public Agen findByBk(Account bk1, String bk2) {
+		List<Agen> list = super.entityManager
+				.createQuery("FROM Agen WHERE account=:idacc AND email=:email")
+				.setParameter("idacc", bk1)
+				.setParameter("email", bk2)
+				.getResultList();
 		if (list.size() > 0) {
 			return list.get(0);
 		} else {

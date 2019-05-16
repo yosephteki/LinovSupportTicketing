@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import LinovSupport.Ticketing.dao.AgenDao;
 import LinovSupport.Ticketing.exception.ErrorException;
+import LinovSupport.Ticketing.model.Account;
 import LinovSupport.Ticketing.model.Agen;
 
 @Service
@@ -22,7 +23,7 @@ public class AgenService {
 		return agenDao.findById(id);
 	}
 	
-	public Agen findByBK(String bk1,String bk2) {
+	public Agen findByBK(Account bk1,String bk2) {
 		return agenDao.findByBk(bk1, bk2);
 	}
 	public void insertAgen(Agen agen) {
