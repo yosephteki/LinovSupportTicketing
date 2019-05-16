@@ -66,10 +66,10 @@ public class AgenController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/{email}/{nama}")
-	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable nama){
-		
+	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable String nama){
+		return ResponseEntity.ok(agenService.findByFilter(email, nama));
 	}
 	
 }
