@@ -28,6 +28,9 @@ public class Role {
 	
 	@Column(name="nama_role")
 	private String nama;
+	
+	@Column(name="kode_role")
+	private String kode;
 
 	public String getIdRole() {
 		return idRole;
@@ -44,6 +47,15 @@ public class Role {
 	public void setNama(String nama) {
 		this.nama = nama;
 	}
+
+	public String getKode() {
+		return kode;
+	}
+
+	public void setKode(String kode) {
+		this.kode = kode;
+	}
+	
 	
 	
 

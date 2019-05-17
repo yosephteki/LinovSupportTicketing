@@ -10,10 +10,9 @@ package LinovSupport.Ticketing.model;
 public class Multi {
 	private String username;
 	private String password;
-	private String idRole;
+	private Role Role;
 	private String id;
 	private Account account;
-//	private String idAcc;
 	private String email;
 	private String nama;
 	private boolean active;
@@ -30,11 +29,12 @@ public class Multi {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getIdRole() {
-		return idRole;
+
+	public Role getRole() {
+		return Role;
 	}
-	public void setIdRole(String idRole) {
-		this.idRole = idRole;
+	public void setRole(Role role) {
+		Role = role;
 	}
 	public String getId() {
 		return id;

@@ -52,14 +52,15 @@ public class MultiController {
 			Agen newAgen = new Agen();
 			newAgen = agenService.findByBK(multi.getAccount(),multi.getEmail());
 			
-//			User user = new User();
-//			user.setUsername(multi.getUsername());
-//			user.setPassword(multi.getPassword());
-//			user.setIdRole(multi.getIdRole());
-		
-//			user.setDetailRole(newAgen.getIdAgen());
+			User user = new User();
+			user.setUsername(multi.getUsername());
+			user.setPassword(multi.getPassword());
 			
-//			userService.create(user);
+			user.setIdRole(multi.getRole().getIdRole());
+		
+			user.setDetailRole(newAgen.getIdAgen());
+			
+			userService.create(user);
 			
 			msg="success";
 			return ResponseEntity.ok(newAgen);
