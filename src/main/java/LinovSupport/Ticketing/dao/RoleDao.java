@@ -50,7 +50,8 @@ public class RoleDao extends CommonDao {
 			hql.append("AND nama=:nama");
 		}
 		
-		Query query = (Query) super.entityManager.createQuery(hql.toString());
+		Query query = (Query) super.entityManager
+				.createQuery(hql.toString());
 		if (!nama.trim().isEmpty()) {
 			query.setParameter("nama",nama);
 		}

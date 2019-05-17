@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.Agen;
-import LinovSupport.Ticketing.model.Agent;
 import LinovSupport.Ticketing.model.Multi;
 import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.service.AgenService;
-import LinovSupport.Ticketing.service.AgentService;
 import LinovSupport.Ticketing.service.UserService;
 
 /**
@@ -55,12 +53,10 @@ public class MultiController {
 			User user = new User();
 			user.setUsername(multi.getUsername());
 			user.setPassword(multi.getPassword());
-			
 			user.setIdRole(multi.getRole().getIdRole());
-		
 			user.setDetailRole(newAgen.getIdAgen());
 			
-			userService.create(user);
+			userService.insertUser(user);
 			
 			msg="success";
 			return ResponseEntity.ok(newAgen);

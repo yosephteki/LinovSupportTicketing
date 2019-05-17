@@ -71,5 +71,9 @@ public class AgenController {
 	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable String nama){
 		return ResponseEntity.ok(agenService.findByFilter(email, nama));
 	}
+	@GetMapping("id/{id}")
+	public ResponseEntity<?> findById(@PathVariable String id){
+		return ResponseEntity.ok(agenService.findById(id));
+	}
 	
 }

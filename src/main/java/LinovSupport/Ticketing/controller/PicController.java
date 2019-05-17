@@ -31,10 +31,10 @@ public class PicController {
 	private PicService picService;
 
 	@PostMapping("")
-	public ResponseEntity<?> create(@RequestBody Pic pic) throws ErrorException {
+	public ResponseEntity<?> insertPic(@RequestBody Pic pic) throws ErrorException {
 		String msg;
 		try {
-			picService.create(pic);
+			picService.insertPic(pic);
 			msg = "success creating pic";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
@@ -46,7 +46,7 @@ public class PicController {
 	public ResponseEntity<?> update(@RequestBody Pic pic) throws ErrorException {
 		String msg;
 		try {
-			picService.update(pic);
+			picService.updatePic(pic);
 			msg = "success updatin g pic";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
@@ -58,7 +58,7 @@ public class PicController {
 	public ResponseEntity<?> delete(@PathVariable String id) {
 		String msg;
 		try {
-			picService.delete(id);
+			picService.deletePic(id);
 			msg = "success deleting pic";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {

@@ -3,10 +3,15 @@
  */
 package LinovSupport.Ticketing.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -41,6 +46,18 @@ public class Account {
 
 	@Column(name = "alamat_pt")
 	private String alamat;
+	
+//	@OneToMany(mappedBy = "idAccount",targetEntity = Pic.class,fetch = FetchType.LAZY,
+//			cascade = CascadeType.REMOVE)
+//	private List<Pic> pic;
+
+//	public List<Pic> getPic() {
+//		return pic;
+//	}
+//
+//	public void setPic(List<Pic> pic) {
+//		this.pic = pic;
+//	}
 
 	public String getIdAccount() {
 		return idAccount;

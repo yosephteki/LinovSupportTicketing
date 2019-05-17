@@ -20,7 +20,7 @@ public class AgenDao extends CommonDao{
 	@Transactional
 	public Agen findById(String id){
 		List<Agen> list = super.entityManager
-				.createQuery("FROM Agen WHERE idAgent=:id")
+				.createQuery("FROM Agen WHERE idAgen=:id")
 				.setParameter("id", id)
 				.getResultList();
 		if (list.size() > 0) {
@@ -50,7 +50,7 @@ public class AgenDao extends CommonDao{
 	@Transactional
 	public boolean isIDExist(String id) {
 		List<Agen> list = super.entityManager
-				.createQuery("FROM Agen WHERE idAgent=:id")
+				.createQuery("FROM Agen WHERE idAgen=:id")
 				.setParameter("id", id)
 				.getResultList();
 		if (list.size() > 0) {

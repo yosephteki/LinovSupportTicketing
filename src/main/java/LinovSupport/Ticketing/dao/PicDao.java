@@ -76,7 +76,7 @@ public class PicDao extends CommonDao {
 	}
 
 	@Transactional
-	public void create(Pic pic) {
+	public void insertPic(Pic pic) {
 		super.entityManager.merge(pic);
 	}
 
@@ -105,12 +105,12 @@ public class PicDao extends CommonDao {
 	}
 
 	@Transactional
-	public void update(Pic pic) {
+	public void updatePic(Pic pic) {
 		super.entityManager.merge(pic);
 	}
 
 	@Transactional
-	public void delete(String id) {
+	public void deletePic(String id) {
 		Pic pic = findById(id);
 		super.entityManager.remove(pic);
 	}

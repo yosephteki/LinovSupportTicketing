@@ -3,6 +3,8 @@
  */
 package LinovSupport.Ticketing.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +49,7 @@ public class AccountService {
 		if (account.isActive() == false) {
 			throw new ErrorException("status active tidak boleh kosong");
 		}
-		accountDao.create(account);
+		accountDao.insertAccount(account);
 	}
 	
 	public void updateAccount(Account account) throws ErrorException{
@@ -66,18 +68,24 @@ public class AccountService {
 		if (account.getTelepon().isEmpty()) {
 			throw new ErrorException("telepon tidak boleh kosong");
 		}
-		if (account.isActive() == false) {
-			throw new ErrorException("status active tidak boleh kosong");
-		}
-		accountDao.update(account);
+		accountDao.updateAccount(account);
 	}
 	
-	public void delete(String id) throws ErrorException{
+	public void deleteAccount(String id) throws ErrorException{
 		if (accountDao.isIdExist(id)) {
-			accountDao.delete(id);
+			accountDao.deleteAccount(id);
 		}else {
 			throw new ErrorException("Account tidak ditemukan!");
 		}
 	}
+	public List<Account> findByFilter(String nama,String telepon,String alamat){
+		return accountDao.findByFilter(nama, telepon, alamat);
+	}
+	
+	
+	public List<Account> findAll(){
+		return accountDao.findAll();
+	}
+	
 	
 }

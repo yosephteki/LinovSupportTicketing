@@ -10,6 +10,8 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 import LinovSupport.Ticketing.model.Account;
 
 /**
@@ -76,7 +78,7 @@ public class AccountDao extends CommonDao {
 	}
 
 	@Transactional
-	public void create(Account account) {
+	public void insertAccount(Account account) {
 		super.entityManager.merge(account);
 	}
 	
@@ -95,7 +97,6 @@ public class AccountDao extends CommonDao {
 			hql.append(" AND nama =:nama");
 		}
 		
-		
 		Query query = (Query) super.entityManager.createQuery(hql.toString());
 		
 		if (!telepon.trim().isEmpty()) {
@@ -113,14 +114,23 @@ public class AccountDao extends CommonDao {
 	}
 
 	@Transactional
-	public void update(Account account) {
+	public void updateAccount(Account account) {
 		super.entityManager.merge(account);
 	}
 
 	@Transactional
-	public void delete(String id) {
+	public void deleteAccount(String id) {
 		Account account = findById(id);
 		super.entityManager.remove(account);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Account> findAll(){
+		List<Account> list = super.entityManager
+				.createQuery("FROM Account")
+				.getResultList();
+		return list;
 	}
 
 }
