@@ -36,7 +36,7 @@ public class AgenController {
 	public ResponseEntity<?> insertAgen(@RequestBody Agen agen) {
 		String msg;
 		try {
-			agenService.insertAgen(agen);
+			agenService.insertAgent(agen);
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {

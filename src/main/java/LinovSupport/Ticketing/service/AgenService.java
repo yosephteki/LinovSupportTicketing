@@ -34,7 +34,7 @@ public class AgenService {
 		if (agenDao.isIDExist(agen.getIdAgen())) {
 			throw new ErrorException("id sudah ada");
 		}
-		if (agenDao.isBkExist(agen.getAccount().getIdAccount(),agen.getEmail())) {
+		if (agenDao.isBkExist(agen.getAccount(),agen.getEmail())) {
 			throw new ErrorException("User sudah ada!");
 		}
 		if (agen.getAccount().equals(null)) {
@@ -56,7 +56,7 @@ public class AgenService {
 		if (!agenDao.isIDExist(agen.getIdAgen())) {
 			throw new ErrorException("ID Agent tidak ditemukan!");
 		}
-		if (!agenDao.isBkExist(agen.getAccount().getIdAccount(),agen.getEmail())) {
+		if (!agenDao.isBkExist(agen.getAccount(),agen.getEmail())) {
 			throw new ErrorException("User tidak dtemukan!");
 		}
 		if (agen.getNama().isEmpty()) {

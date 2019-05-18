@@ -61,9 +61,9 @@ public class AgenDao extends CommonDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public boolean isBkExist(String bk1, String bk2) {
+	public boolean isBkExist(Account bk1, String bk2) {
 		List<Agen> list = super.entityManager
-				.createQuery("FROM Agen WHERE idAccount=:idacc AND email=:email")
+				.createQuery("FROM Agen WHERE account=:idacc AND email=:email")
 				.setParameter("idacc", bk1)
 				.setParameter("email", bk2)
 				.getResultList();
