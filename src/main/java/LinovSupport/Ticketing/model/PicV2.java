@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-@Table(name = "tbl_pics")
+@Table(name = "tbl_pic")
 public class PicV2 {
 	
 	@Id

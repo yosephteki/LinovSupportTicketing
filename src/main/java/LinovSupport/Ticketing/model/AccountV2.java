@@ -16,12 +16,14 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.progamer.model.DetailTransaksiPembelian;
+
 /**
  * @author Yosep Teki
  *
  */
 @Entity
-@Table(name = "tbl_accounts")
+@Table(name = "tbl_account")
 public class AccountV2 {
 	
 	@Id
@@ -46,7 +48,9 @@ public class AccountV2 {
 	private boolean active;
 	
 //	@OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY,mappedBy = "account")
-//	private List<Pic> pics;
+	@OneToMany(mappedBy = "account", targetEntity = PicV2.class, 
+			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE/* , orphanRemoval = true */)
+	private List<PicV2> pics;
 	
 	public String getIdAccount() {
 		return idAccount;
@@ -96,14 +100,15 @@ public class AccountV2 {
 		this.active = active;
 	}
 
-	public List<Pic> getPics() {
+	public List<PicV2> getPics() {
 		return pics;
 	}
 
-	public void setPics(List<Pic> pics) {
+	public void setPics(List<PicV2> pics) {
 		this.pics = pics;
 	}
-	
+
+
 	
 	
 }

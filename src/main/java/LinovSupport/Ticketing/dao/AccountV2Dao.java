@@ -14,14 +14,14 @@ import LinovSupport.Ticketing.model.AccountV2;
  * @author Yosep Teki
  *
  */
-@Repository("AccountDao2")
+@Repository("AccountV2Dao")
 public class AccountV2Dao extends CommonDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public AccountV2 findById(String id) {
 		List<AccountV2> list = super.entityManager
-				.createQuery("FROM Account WHERE idAccount=:id")
+				.createQuery("FROM AccountV2 WHERE idAccount=:id")
 				.setParameter("id", id)
 				.getResultList();
 		if (list.size()>0) {
@@ -36,7 +36,7 @@ public class AccountV2Dao extends CommonDao{
 	@Transactional
 	public AccountV2 findByBk(String nama) {
 		List<AccountV2> list = super.entityManager
-				.createQuery("FROM Account WHERE nama=:nama")
+				.createQuery("FROM AccountV2 WHERE nama=:nama")
 				.setParameter("nama",nama)
 				.getResultList();
 		if (list.size() > 0) {
