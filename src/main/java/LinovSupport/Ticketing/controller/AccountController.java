@@ -61,11 +61,11 @@ public class AccountController {
 	public ResponseEntity<?> findAll(){
 		return ResponseEntity.ok(accountService.findAll());
 	}
-	@GetMapping("/idAccount/{idAccount}")
+	@GetMapping("/{idAccount}")
 	public ResponseEntity<?> findById(@PathVariable String idAccount){
 		return ResponseEntity.ok(accountService.findById(idAccount));
 	}
-	@GetMapping("/nama/{nama}")
+	@GetMapping("/{nama}")
 	public ResponseEntity<?> findByBk(@PathVariable String nama){
 		return ResponseEntity.ok(accountService.findByBk(nama));
 	}
@@ -117,7 +117,7 @@ public class AccountController {
 		}
 	}
 
-	@DeleteMapping("/del/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteAccount(@PathVariable String id) {
 		String msg;
 		try {
