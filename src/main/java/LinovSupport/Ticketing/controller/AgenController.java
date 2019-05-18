@@ -36,7 +36,7 @@ public class AgenController {
 	public ResponseEntity<?> insertAgen(@RequestBody Agen agen) {
 		String msg;
 		try {
-			agenService.insertAgen(agen);
+			agenService.insertAgent(agen);
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
@@ -70,6 +70,10 @@ public class AgenController {
 	@GetMapping("/{email}/{nama}")
 	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable String nama){
 		return ResponseEntity.ok(agenService.findByFilter(email, nama));
+	}
+	@GetMapping("id/{id}")
+	public ResponseEntity<?> findById(@PathVariable String id){
+		return ResponseEntity.ok(agenService.findById(id));
 	}
 	
 }

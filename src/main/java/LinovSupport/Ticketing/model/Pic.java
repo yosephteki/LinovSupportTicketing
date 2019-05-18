@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,6 +21,15 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "tbl_pic")
 public class Pic {
+	
+	public Pic() {
+		idPic = "";
+		idAccount = new Account();
+		nama = "";
+		email = "";
+//		account  = new Account();
+		
+	}
 
 	@Id
 	@Column(name = "id_pic")
@@ -39,6 +49,18 @@ public class Pic {
 
 	@Column(name = "active")
 	private boolean active;
+	
+//	@ManyToOne
+//	@JoinColumn(name = "id_account",referencedColumnName = "id_account")
+//	private Account idAccount;
+//	
+//	public Account getAccount() {
+//		return idAccount;
+//	}
+//
+//	public void setAccount(Account idAccount) {
+//		this.idAccount = idAccount;
+//	}
 
 	public String getIdPic() {
 		return idPic;
