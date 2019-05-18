@@ -65,7 +65,7 @@ public class AccountController {
 	public ResponseEntity<?> findById(@PathVariable String idAccount){
 		return ResponseEntity.ok(accountService.findById(idAccount));
 	}
-	@GetMapping("/{nama}")
+	@GetMapping("/nama/{nama}")
 	public ResponseEntity<?> findByBk(@PathVariable String nama){
 		return ResponseEntity.ok(accountService.findByBk(nama));
 	}
