@@ -23,14 +23,6 @@ public class AccountV2Dao extends CommonDao{
 				.createQuery("FROM AccountV2 WHERE idAccount=:id")
 				.setParameter("id", id)
 				.getSingleResult();
-//		AccountV2 acc = new AccountV2();
-//		List<PicV2> pics = new ArrayList<PicV2>();
-//			for(PicV2 picss : account.getPics()) {
-//				picss.setAccount(acc);
-//				pics.add(picss);
-//			}
-//		account.setPics(pics);
-//		
 		}catch(Exception e) {
 		return account = new AccountV2();
 	}

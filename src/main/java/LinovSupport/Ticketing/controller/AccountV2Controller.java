@@ -3,6 +3,9 @@
  */
 package LinovSupport.Ticketing.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +46,16 @@ public class AccountV2Controller {
 	}
 	@GetMapping("/{idAccount}")
 	public ResponseEntity<?> findById(@PathVariable String idAccount){
-		return ResponseEntity.ok(accountV2Service.findById(idAccount));
+		AccountV2 account = accountV2Service.findById(idAccount);
+		AccountV2 acc = new AccountV2();
+		acc.setIdAccount(account.getIdAccount());
+		List<PicV2> pics = new ArrayList<PicV2>();
+			for(PicV2 picss : account.getPics()) {
+				picss.setAccount(acc);
+				pics.add(picss);
+			}
+			account.setPics(pics);
+		return ResponseEntity.ok(account);
 	}
 	
 	@GetMapping("/nama/{nama}")
@@ -69,7 +81,7 @@ public class AccountV2Controller {
 				pic.setAccount(idAccount);
 				picV2Service.insertPicV2(pic);
 			}
-			msg="success";
+			msg="Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
