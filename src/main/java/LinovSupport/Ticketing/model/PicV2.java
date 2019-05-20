@@ -20,6 +20,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "tbl_pic")
 public class PicV2 {
+
+	public PicV2() {
+		idPic = "";
+		account = new AccountV2();
+		nama = "";
+		email = "";
+	}
 	
 	@Id
 	@Column(name = "id_pic")
