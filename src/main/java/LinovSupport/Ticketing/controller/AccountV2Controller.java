@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,11 +37,31 @@ public class AccountV2Controller {
 	@Autowired
 	private PicV2Service picV2Service;
 	
+	@GetMapping("")
+	public ResponseEntity<?> findAll(){
+		return ResponseEntity.ok(accountV2Service.findAll());
+	}
+	@GetMapping("/{idAccount}")
+	public ResponseEntity<?> findById(@PathVariable String idAccount){
+		return ResponseEntity.ok(accountV2Service.findById(idAccount));
+	}
+	
+	@GetMapping("/nama/{nama}")
+	public ResponseEntity<?> findByBk(@PathVariable String nama){
+		return ResponseEntity.ok(accountV2Service.findByBk(nama));
+	}
+	
+	@GetMapping("/{nama}/{telepon}/{alamat}")
+	public ResponseEntity<?> findByFilter(@PathVariable String nama,@PathVariable String telepon
+			,@PathVariable String alamat){
+		return ResponseEntity.ok(accountV2Service.findByFilter(nama, telepon, alamat));
+	}
+	
 	@PostMapping("")
-	private ResponseEntity<?> insertAccountV2(@RequestBody AccountV2 accountV2) throws ErrorException{
+	private ResponseEntity<?> insertAccount(@RequestBody AccountV2 accountV2) throws ErrorException{
 		try {
 			String msg;
-			accountV2Service.insertAccountV2(accountV2);
+			accountV2Service.insertAccount(accountV2);
 			System.out.println("berhasil insert");
 			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
 			
@@ -54,15 +76,33 @@ public class AccountV2Controller {
 		}
 	}
 	
-	@GetMapping("/{id}")
-	private ResponseEntity<?> findById(@PathVariable String id) throws ErrorException{
+	@PutMapping("")
+	public ResponseEntity<?> updateAccount(@RequestBody AccountV2 account) throws ErrorException{
+		String msg;
 		try {
-			String msg="success";
-			AccountV2 acc = accountV2Service.findById(id);
-			return ResponseEntity.ok(acc);
+			accountV2Service.updateAccount(account);
+			msg = "Data berhasil diubah";
+			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteAccount(@PathVariable String id) {
+		String msg;
+		try {
+			accountV2Service.deleteAccount(id);
+			msg = "data berhasil dihapus";
+			return ResponseEntity.ok(msg);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+
+	
+	
+	
+	
 
 }

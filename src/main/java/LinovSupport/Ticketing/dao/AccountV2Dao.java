@@ -2,15 +2,11 @@
  * 
  */
 package LinovSupport.Ticketing.dao;
-
-import java.util.ArrayList;
 import java.util.List;
-
+import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import LinovSupport.Ticketing.model.AccountV2;
-import LinovSupport.Ticketing.model.PicV2;
 
 /**
  * @author Yosep Teki
@@ -65,12 +61,44 @@ public class AccountV2Dao extends CommonDao{
 	}
 	
 	@Transactional
-	public boolean isBkExsit(String nama) {
+	public boolean isBkExist(String nama) {
 		if (!findByBk(nama).getIdAccount().isEmpty()) {
 			return true;
 		}else {
 			return false;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<AccountV2> findByFilter(String telepon,String alamat,String nama){
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM AccountV2 WHERE 1=1");
+		if (!telepon.trim().isEmpty()) {
+			hql.append(" AND telepon =:telepon");
+		}
+		if (!alamat.trim().isEmpty()) {
+			hql.append(" AND alamat =:alamat");
+		}
+		if (!nama.trim().isEmpty()) {
+			hql.append(" AND nama =:nama");
+		}
+		
+		Query query = (Query) super.entityManager
+				.createQuery(hql.toString());
+		
+		if (!telepon.trim().isEmpty()) {
+			query.setParameter("telepon",telepon);
+		}
+		if (!alamat.trim().isEmpty()) {
+			query.setParameter("alamat", alamat);
+		}
+		if (!nama.trim().isEmpty()) {
+			query.setParameter("nama", nama);
+		}
+		List<AccountV2> account = query.getResultList();
+		
+		return account;
 	}
 	
 	@Transactional
@@ -89,10 +117,13 @@ public class AccountV2Dao extends CommonDao{
 		super.entityManager.remove(account);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<AccountV2> findAll(){
 		List<AccountV2> list = super.entityManager
-				.createQuery("F")
+				.createQuery("FROM AccountV2")
+				.getResultList();
+		return list;
 	}
 		
 }
