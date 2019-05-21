@@ -47,9 +47,8 @@ public class AccountV2 {
 	@Column(name = "active")
 	private boolean active;
 	
-//	@OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY,mappedBy = "account")
 	@OneToMany(mappedBy = "account", targetEntity = PicV2.class, 
-			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE/* , orphanRemoval = true */)
+			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<PicV2> pics;
 	
 	public String getIdAccount() {

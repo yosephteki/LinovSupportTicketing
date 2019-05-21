@@ -30,19 +30,7 @@ public class UserService {
 		return userDao.findByBk(bk);
 	}
 
-	public void insertUser(User user) throws ErrorException{
-		if (userDao.isBkExist(user.getUsername())) {
-			throw new ErrorException("Username sudah digunakan");
-		}
-		if (user.getUsername().isEmpty()) {
-			throw new ErrorException("Username tidak boleh kosong");
-		}
-		if (user.getPassword().length() < 6 || user.getPassword().length() > 16) {
-			throw new ErrorException("Password harus lebih dari 6 karakter dan maksimal 16 karakter");
-		}
-		if (user.getPassword().isEmpty()) {
-			throw new ErrorException("Password tidak boleh kosong");
-		}
+	public void insertUser(User user){
 		userDao.insertUser(user);
 	}
 

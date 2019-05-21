@@ -48,7 +48,7 @@ public class AgenDao extends CommonDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public boolean isIDExist(String id) {
+	public boolean isIdExist(String id) {
 		List<Agen> list = super.entityManager
 				.createQuery("FROM Agen WHERE idAgen=:id")
 				.setParameter("id", id)

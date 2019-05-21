@@ -46,7 +46,7 @@ public class MultiController {
 			agen.setActive(multi.isActive());
 			agen.setNama(multi.getNama());
 			
-			agenService.insertAgen(agen);
+			agenService.insertAgent(agen);
 			Agen newAgen = new Agen();
 			newAgen = agenService.findByBK(multi.getAccount(),multi.getEmail());
 			
