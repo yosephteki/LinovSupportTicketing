@@ -5,9 +5,10 @@ package LinovSupport.Ticketing.dao;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.PicV2;
 
@@ -54,6 +55,20 @@ public class PicV2Dao extends CommonDao {
 			return false;
 		}
 	}
+//	@SuppressWarnings("unchecked")
+//	@Transactional
+//	public boolean isBkExist(String bk1, String bk2) {
+//		List<Pic> list = super.entityManager
+//				.createQuery("FROM Pic WHERE idAccount=:idacc AND email=:email")
+//				.setParameter("idacc", bk1)
+//				.setParameter("email", bk2)
+//				.getResultList();
+//		if (list.size() > 0) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 	public boolean isBkExist(AccountV2 account,String email) {
 		if (!findByBk(account, email).getIdPic().isEmpty()) {
 			return true;
@@ -65,9 +80,50 @@ public class PicV2Dao extends CommonDao {
 	public void insertPicV2(PicV2 picV2) {
 		super.entityManager.merge(picV2);
 	}
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public PicV2 findAll() {
+		List<PicV2> list = super.entityManager
+				.createQuery("FROM Pic")
+				.getResultList();
+		return (PicV2) list;
+	}
 	
-	
-	
+
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<PicV2> findByFilter(String email, String nama) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("FROM Agent WHERE 1=1");
+		if (!email.trim().isEmpty()) {
+			hql.append(" AND email=:email");
+		}
+		if (!nama.trim().isEmpty()) {
+			hql.append(" AND nama=:nama");
+		}
+		Query query = super.entityManager.createQuery(hql.toString());
+
+		if (!email.trim().isEmpty()) {
+			query.setParameter("email", email);
+		}
+		if (!nama.trim().isEmpty()) {
+			query.setParameter("nama", nama);
+		}
+		List<PicV2> pics = query.getResultList();
+
+		return pics;
+	}
+
+	@Transactional
+	public void updatePic(PicV2 pic) {
+		super.entityManager.merge(pic);
+	}
+
+	@Transactional
+	public void deletePic(String id) {
+		PicV2 pic = findById(id);
+		super.entityManager.remove(pic);
+	}
 	
 
 }
