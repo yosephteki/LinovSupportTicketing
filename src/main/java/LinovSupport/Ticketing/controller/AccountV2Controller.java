@@ -79,7 +79,7 @@ public class AccountV2Controller {
 			
 			for(PicV2 pic : accountV2.getPics()) {
 				pic.setAccount(idAccount);
-				picV2Service.insertPicV2(pic);
+				picV2Service.insertPic(pic);
 			}
 			msg="Data berhasil di tambah";
 			return ResponseEntity.ok(msg);

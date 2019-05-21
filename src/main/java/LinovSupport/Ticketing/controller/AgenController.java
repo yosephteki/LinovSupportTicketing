@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.Agen;
+import LinovSupport.Ticketing.model.Multi;
+import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.service.AgenService;
+import LinovSupport.Ticketing.service.UserService;
 
 /**
  * @author Yosep Teki
@@ -31,12 +34,34 @@ public class AgenController {
 
 	@Autowired
 	private AgenService agenService;
+	@Autowired
+	private UserService userService;
 
 	@PostMapping("")
-	public ResponseEntity<?> insertAgen(@RequestBody Agen agen) {
+	public ResponseEntity<?> insertAgen(@RequestBody Multi agen) throws ErrorException {
 		String msg;
 		try {
-			agenService.insertAgent(agen);
+			Agen agent = new Agen();
+			
+			agent.setIdAgen(agen.getId());
+			agent.setAccount(agen.getAccount());
+			agent.setEmail(agen.getEmail());
+			agent.setActive(agen.isActive());
+			agent.setNama(agen.getNama());
+			
+			agenService.insertAgent(agent);
+			
+			Agen newAgen = new Agen();
+			newAgen = agenService.findByBK(agen.getAccount(),agen.getEmail());
+			
+			User user = new User();
+			user.setUsername(agen.getUsername());
+			user.setPassword(agen.getPassword());
+			user.setIdRole(agen.getRole().getIdRole());
+			user.setDetailRole(newAgen.getIdAgen());
+			
+			userService.insertUser(user);
+			
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
