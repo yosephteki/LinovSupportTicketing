@@ -53,7 +53,7 @@ public class MultiController {
 			User user = new User();
 			user.setUsername(multi.getUsername());
 			user.setPassword(multi.getPassword());
-			user.setIdRole(multi.getRole().getIdRole());
+			user.setIdRole(multi.getRole());
 			user.setDetailRole(newAgen.getIdAgen());
 			
 			userService.insertUser(user);
