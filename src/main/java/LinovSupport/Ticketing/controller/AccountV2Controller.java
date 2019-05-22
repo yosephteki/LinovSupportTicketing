@@ -42,7 +42,23 @@ public class AccountV2Controller {
 
 	@GetMapping("")
 	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(accountV2Service.findAll());
+		try {
+			List<AccountV2> account = accountV2Service.findAll();
+			AccountV2 newAccount = new AccountV2();
+			
+			for (AccountV2 acc : account) {
+				List<PicV2> Pics = new ArrayList<PicV2>();
+				for (PicV2 pic : acc.getPics()) {
+					pic.setAccount(newAccount);
+					Pics.add(pic);
+				}
+				acc.setPics(Pics);
+			}
+
+			return new ResponseEntity<>(account, HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@GetMapping("/{idAccount}")
