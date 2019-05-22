@@ -23,7 +23,7 @@ public class PicV2Service {
 	@Autowired
 	private PicV2Dao picV2Dao;
 	
-	public PicV2 findAll() {
+	public List<PicV2> findAll() {
 		return picV2Dao.findAll();
 	}
 	
@@ -40,18 +40,18 @@ public class PicV2Service {
 //	}
 	
 	public void insertPic(PicV2 picV2) throws ErrorException {
-		if (picV2Dao.isIdExist(picV2.getIdPic())) {
-			throw new ErrorException("ID sudah digunakan!");
-		}
-		if (picV2Dao.isBkExist(picV2.getAccount(), picV2.getEmail())) {
-			throw new ErrorException("Pic sudah ada!");
-		}
-		if (picV2.getNama().isEmpty()) {
-			throw new ErrorException("Nama tidak boleh kosong!");
-		}
-		if (picV2.getEmail().isEmpty()) {
-			throw new ErrorException("Email tidak boleh kosong!");
-		}
+//		if (picV2Dao.isIdExist(picV2.getIdPic())) {
+//			throw new ErrorException("ID sudah digunakan!");
+//		}
+//		if (picV2Dao.isBkExist(picV2.getAccount(), picV2.getEmail())) {
+//			throw new ErrorException("Pic sudah ada!");
+//		}
+//		if (picV2.getNama().isEmpty()) {
+//			throw new ErrorException("Nama tidak boleh kosong!");
+//		}
+//		if (picV2.getEmail().isEmpty()) {
+//			throw new ErrorException("Email tidak boleh kosong!");
+//		}
 		picV2Dao.insertPicV2(picV2);
 	}
 

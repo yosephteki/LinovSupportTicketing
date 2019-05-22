@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-@Table(name="tbl_agent")
+@Table(name="tbl_agent",uniqueConstraints = @UniqueConstraint(columnNames = { "id_account", "email" }))
 public class Agen {
 	
 	@Id

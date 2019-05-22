@@ -45,7 +45,7 @@ public class AccountV2Controller {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
 			AccountV2 newAccount = new AccountV2();
-			
+
 			for (AccountV2 acc : account) {
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
@@ -54,7 +54,6 @@ public class AccountV2Controller {
 				}
 				acc.setPics(Pics);
 			}
-
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -80,10 +79,10 @@ public class AccountV2Controller {
 		return ResponseEntity.ok(accountV2Service.findByBk(nama));
 	}
 
-	@GetMapping("/{nama}/{telepon}/{alamat}")
-	public ResponseEntity<?> findByFilter(@PathVariable String nama, @PathVariable String telepon,
-			@PathVariable String alamat) {
-		return ResponseEntity.ok(accountV2Service.findByFilter(nama, telepon, alamat));
+	@GetMapping("/telepon/{telepon}/alamat/{alamat}/nama/{nama}")
+	public ResponseEntity<?> findByFilter(@PathVariable String telepon, @PathVariable String alamat,
+			@PathVariable String nama) {
+		return ResponseEntity.ok(accountV2Service.findByFilter(telepon, alamat, nama));
 	}
 
 	@PostMapping("")
@@ -91,9 +90,7 @@ public class AccountV2Controller {
 		try {
 			String msg;
 			accountV2Service.insertAccount(accountV2);
-			System.out.println("berhasil insert");
 			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
-
 			for (PicV2 pic : accountV2.getPics()) {
 				pic.setAccount(idAccount);
 				picV2Service.insertPic(pic);

@@ -82,11 +82,11 @@ public class PicV2Dao extends CommonDao {
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public PicV2 findAll() {
+	public List<PicV2> findAll() {
 		List<PicV2> list = super.entityManager
-				.createQuery("FROM Pic")
+				.createQuery("FROM PicV2")
 				.getResultList();
-		return (PicV2) list;
+		return list;
 	}
 	
 

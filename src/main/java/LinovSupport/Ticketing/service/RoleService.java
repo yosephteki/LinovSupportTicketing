@@ -56,7 +56,7 @@ public class RoleService {
 	public void deleteRole(String id)throws ErrorException{
 		roleDao.deleteRole(id);
 	}
-	public Role findAllRole(){
+	public List<Role> findAllRole(){
 		return roleDao.findAllRole();
 	}
 	public List<Role>findByFilter(String nama){
