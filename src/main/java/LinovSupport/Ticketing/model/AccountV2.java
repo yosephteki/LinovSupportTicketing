@@ -16,8 +16,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.progamer.model.DetailTransaksiPembelian;
-
 /**
  * @author Yosep Teki
  *
