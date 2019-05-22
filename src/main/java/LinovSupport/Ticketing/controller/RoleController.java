@@ -56,7 +56,8 @@ public class RoleController {
 		String msg;
 		try {
 			roleService.insertRole(role);
-			msg = "success creating role";
+//			msg = "success creating role";
+			msg = roleService.findByBk(role.getKode()).getIdRole();
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

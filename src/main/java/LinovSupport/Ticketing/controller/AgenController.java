@@ -79,7 +79,7 @@ public class AgenController {
 		String msg;
 		try {
 			agenService.update(agen);
-			msg="success updating agent";
+			msg="Data berhasil diubah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

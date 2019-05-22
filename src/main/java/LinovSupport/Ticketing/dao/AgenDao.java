@@ -103,10 +103,10 @@ public class AgenDao extends CommonDao{
 		return agens;
 	}
 	
-	@Transactional
-	public void update(Agen agen) {
-		super.entityManager.merge(agen);
-	}
+//	@Transactional
+//	public void update(Agen agen) {
+//		super.entityManager.merge(agen);
+//	}
 	@Transactional
 	public void delete(String id) {
 		Agen agen = findById(id);
