@@ -30,7 +30,7 @@ public class Role {
 	private String nama;
 	
 	@Column(name="kode_role")
-	private String kode;
+	private String kodeRole;
 
 	public String getIdRole() {
 		return idRole;
@@ -48,13 +48,14 @@ public class Role {
 		this.nama = nama;
 	}
 
-	public String getKode() {
-		return kode;
+	public String getKodeRole() {
+		return kodeRole;
 	}
 
-	public void setKode(String kode) {
-		this.kode = kode;
+	public void setKodeRole(String kodeRole) {
+		this.kodeRole = kodeRole;
 	}
+
 	
 	
 	

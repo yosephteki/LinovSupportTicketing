@@ -32,7 +32,7 @@ public class RoleService {
 			throw new ErrorException("id sudah digunakan");
 		}
 		
-		if(roleDao.isBkExist(role.getKode())) {
+		if(roleDao.isBkExist(role.getKodeRole())) {
 			throw new ErrorException("Kode role sudah digunakan");
 		}
 		if(role.getNama().isEmpty()) {
@@ -44,7 +44,7 @@ public class RoleService {
 		if(!roleDao.isIdExist(role.getIdRole())) {
 			throw new ErrorException("id role tidak ditemukan");
 		}
-		if(!roleDao.isBkExist(role.getKode())) {
+		if(!roleDao.isBkExist(role.getKodeRole())) {
 			throw new ErrorException("kode Role tidak ditemukan");
 		}
 		if(role.getNama().isEmpty()) {
