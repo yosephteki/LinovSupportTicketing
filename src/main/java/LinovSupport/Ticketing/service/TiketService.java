@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import LinovSupport.Ticketing.dao.TiketDao;
+import LinovSupport.Ticketing.enumeration.Level;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.Tiket;
 
@@ -29,11 +30,11 @@ public class TiketService {
 		return tiketDao.findAll();
 	}
 	
-	public List<Tiket> findByFilter(String judul, String pic, String level){
+	public List<Tiket> findByFilter(String judul, String pic, Level level){
 		return tiketDao.findByFilter(judul, pic, level);
 	}
 	
-	public List<Tiket> findByLevel(String level){
+	public List<Tiket> findByLevel(Level level){
 		return tiketDao.findByLevel(level);
 	}
 	

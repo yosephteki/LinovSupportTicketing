@@ -110,4 +110,7 @@ public class TiketDao extends CommonDao {
 		return list;
 	}
 
+    public void insertTiket(Tiket tiket) {
+        super.entityManager.merge(tiket);
+}
 }
