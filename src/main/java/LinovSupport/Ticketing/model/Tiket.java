@@ -8,10 +8,14 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.GenericGenerator;
@@ -35,10 +39,11 @@ public class Tiket {
 	@Column(name = "judul_ticket")
 	private String judulTiket;
 
-	@Column(name = "id_pic")
-	private String idPic;
+	@OneToOne
+	@JoinColumn(name = "id_pic", referencedColumnName = "id_pic")
+	private PicV2 idPic;
 
-
+	@Enumerated(EnumType.STRING)
 	@Column(name = "level_ticket")
 	private Level level;
 
@@ -61,15 +66,13 @@ public class Tiket {
 		this.judulTiket = judulTiket;
 	}
 
-	public String getIdPic() {
+	public PicV2 getIdPic() {
 		return idPic;
 	}
 
-	public void setIdPic(String idPic) {
+	public void setIdPic(PicV2 idPic) {
 		this.idPic = idPic;
 	}
-
-	
 
 	public Level getLevel() {
 		return level;

@@ -41,4 +41,8 @@ public class TiketService {
 	public void insertTiket(Tiket tiket)throws ErrorException {
 		 tiketDao.insertTiket(tiket);
 	}
+	public void updateTiket(Tiket tiket)throws ErrorException{
+		tiketDao.updateTiket(tiket);
+	}
+	
 }

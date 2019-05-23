@@ -24,38 +24,30 @@ public class TiketDao extends CommonDao {
 	public Tiket findById(String id) {
 		Tiket tiket;
 		try {
-			tiket = (Tiket) super.entityManager
-					.createQuery("FROM Tiket WHERE idTiket=:id")
-					.setParameter("id", id)
+			tiket = (Tiket) super.entityManager.createQuery("FROM Tiket WHERE idTiket=:id").setParameter("id", id)
 					.getSingleResult();
 		} catch (Exception e) {
 			return tiket = new Tiket();
 		}
 		return tiket;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Tiket findByBk(String judul,String pic) {
-			List<Tiket> list = super.entityManager
-					.createQuery("FROM Tiket WHERE judul=:judul AND idPic=:pic")
-					.setParameter("judul", judul)
-					.setParameter("pic", pic)
-					.getResultList();
-			if (list.size()>0) {
-				return (Tiket)list.get(0);
-			}else {
-				return new Tiket();
-			}
+	public Tiket findByBk(String judul, String pic) {
+		List<Tiket> list = super.entityManager.createQuery("FROM Tiket WHERE judul=:judul AND idPic=:pic")
+				.setParameter("judul", judul).setParameter("pic", pic).getResultList();
+		if (list.size() > 0) {
+			return (Tiket) list.get(0);
+		} else {
+			return new Tiket();
+		}
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Tiket> findAll() {
-		List<Tiket> list = super.entityManager
-				.createQuery("FROM Tiket")
-				.getResultList();
+		List<Tiket> list = super.entityManager.createQuery("FROM Tiket").getResultList();
 		return list;
 	}
 
@@ -90,27 +82,35 @@ public class TiketDao extends CommonDao {
 
 		return list;
 	}
+
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Tiket> findByLevel(Level level){
+	public List<Tiket> findByLevel(Level level) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM Tiket WHERE 1=1");
-		
+
 		if (!level.toString().trim().isEmpty()) {
 			hql.append(" AND level =:level");
 		}
 		Query query = super.entityManager.createQuery(hql.toString());
-		
+
 		if (!level.toString().trim().isEmpty()) {
 			query.setParameter("level", level);
 		}
-		
+
 		List<Tiket> list = query.getResultList();
-		
+
 		return list;
 	}
 
-    public void insertTiket(Tiket tiket) {
-        super.entityManager.merge(tiket);
-}
+	@Transactional
+	public void insertTiket(Tiket tiket) {
+		super.entityManager.merge(tiket);
+	}
+	
+	@Transactional
+	public void updateTiket(Tiket tiket) {
+		super.entityManager.merge(tiket);
+	}
+
 }
