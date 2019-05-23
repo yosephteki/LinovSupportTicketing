@@ -79,11 +79,11 @@ public class UserDao extends CommonDao{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public User findAll() {
+	public List<User> findAll() {
 		List<User> list = super.entityManager
 				.createQuery("FROM User")
 				.getResultList();
-		return (User) list;
+		return list;
 	}
 	
 	@SuppressWarnings("unchecked")

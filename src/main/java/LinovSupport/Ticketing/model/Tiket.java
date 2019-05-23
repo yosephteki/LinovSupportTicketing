@@ -37,6 +37,7 @@ public class Tiket {
 
 	@Column(name = "id_pic")
 	private String idPic;
+
 	@Column(name = "level_ticket")
 	private String lvlTiket;
 

@@ -42,7 +42,7 @@ public class UserService {
 		userDao.deleteUser(id);
 	}
 	
-	public User findAll() {
+	public List<User> findAll() {
 		return userDao.findAll();
 	}
 	

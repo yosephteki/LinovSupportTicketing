@@ -27,4 +27,12 @@ public class TiketService {
 	public List<Tiket> findAll(){
 		return tiketDao.findAll();
 	}
+	
+	public List<Tiket> findByFilter(String judul, String pic, String level){
+		return tiketDao.findByFilter(judul, pic, level);
+	}
+	
+	public List<Tiket> findByLevel(String level){
+		return tiketDao.findByLevel(level);
+	}
 }

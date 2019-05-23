@@ -35,5 +35,18 @@ public class TiketController {
 		return ResponseEntity.ok(tiketService.findAll());
 	}
 	
+	@GetMapping("/judul/{judul}/pic/{pic}/level/{level}")
+	public ResponseEntity<?> findByFilter(@PathVariable String judul, 
+			@PathVariable String pic,@PathVariable String level){
+		return ResponseEntity.ok(tiketService.findByFilter(judul, pic, level));
+	}
+	
+	@GetMapping("/level/{level}")
+	public ResponseEntity<?> findByLevel(@PathVariable String level){
+		return ResponseEntity.ok(tiketService.findByLevel(level));
+	}
+	
+	
+	
 
 }

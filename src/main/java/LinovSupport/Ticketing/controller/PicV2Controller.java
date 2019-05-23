@@ -67,9 +67,11 @@ public class PicV2Controller {
 //		return ResponseEntity.ok(picService.findAll());
 		try {	
 			List<PicV2> pics = picService.findAll();
-			AccountV2 acc= new AccountV2();
 			
 			for(PicV2 pic : pics) {
+				AccountV2 acc= new AccountV2();
+				String idAcc = pic.getAccount().getIdAccount();
+				acc.setIdAccount(idAcc);
 				pic.setAccount(acc);
 				}
 			return new ResponseEntity<>(pics,HttpStatus.OK);
