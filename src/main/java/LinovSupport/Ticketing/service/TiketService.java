@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import LinovSupport.Ticketing.dao.TiketDao;
+import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.Tiket;
 
 /**
@@ -34,5 +35,9 @@ public class TiketService {
 	
 	public List<Tiket> findByLevel(String level){
 		return tiketDao.findByLevel(level);
+	}
+	
+	public void insertTiket(Tiket tiket)throws ErrorException {
+		 tiketDao.insertTiket(tiket);
 	}
 }

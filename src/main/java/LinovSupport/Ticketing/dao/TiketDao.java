@@ -91,5 +91,10 @@ public class TiketDao extends CommonDao {
 		
 		return list;
 	}
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public void insertTiket(Tiket tiket) {
+		super.entityManager.merge(tiket);
+	}
 
 }
