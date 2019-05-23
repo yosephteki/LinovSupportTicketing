@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.progamer.model.DetailTransaksiPembelian;
+import LinovSupport.Ticketing.enumeration.Level;
 
 /**
  * @author Yosep Teki
@@ -38,8 +38,9 @@ public class Tiket {
 	@Column(name = "id_pic")
 	private String idPic;
 
+
 	@Column(name = "level_ticket")
-	private String lvlTiket;
+	private Level level;
 
 	@OneToMany(mappedBy = "idTiket", targetEntity = DetailTiket.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<DetailTiket> detailTiket;
@@ -68,12 +69,14 @@ public class Tiket {
 		this.idPic = idPic;
 	}
 
-	public String getLvlTiket() {
-		return lvlTiket;
+	
+
+	public Level getLevel() {
+		return level;
 	}
 
-	public void setLvlTiket(String lvlTiket) {
-		this.lvlTiket = lvlTiket;
+	public void setLevel(Level level) {
+		this.level = level;
 	}
 
 	public List<DetailTiket> getDetailTiket() {

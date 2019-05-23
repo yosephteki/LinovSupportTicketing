@@ -9,6 +9,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import LinovSupport.Ticketing.enumeration.Level;
 import LinovSupport.Ticketing.model.Tiket;
 
 /**
@@ -32,6 +34,7 @@ public class TiketDao extends CommonDao {
 		return tiket;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public Tiket findByBk(String judul,String pic) {
 			List<Tiket> list = super.entityManager
@@ -58,7 +61,7 @@ public class TiketDao extends CommonDao {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Tiket> findByFilter(String judul, String pic, String level) {
+	public List<Tiket> findByFilter(String judul, String pic, Level level) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM Tiket WHERE 1=1");
 		if (!judul.trim().isEmpty()) {
@@ -67,7 +70,7 @@ public class TiketDao extends CommonDao {
 		if (!pic.trim().isEmpty()) {
 			hql.append(" AND pic =:pic");
 		}
-		if (!level.trim().isEmpty()) {
+		if (!level.toString().trim().isEmpty()) {
 			hql.append(" AND level =:level");
 		}
 
@@ -79,7 +82,7 @@ public class TiketDao extends CommonDao {
 		if (!pic.trim().isEmpty()) {
 			query.setParameter("pic", pic);
 		}
-		if (!level.trim().isEmpty()) {
+		if (!level.toString().trim().isEmpty()) {
 			query.setParameter("level", level);
 		}
 
@@ -89,16 +92,16 @@ public class TiketDao extends CommonDao {
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Tiket> findByLevel(String level){
+	public List<Tiket> findByLevel(Level level){
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM Tiket WHERE 1=1");
 		
-		if (!level.trim().isEmpty()) {
+		if (!level.toString().trim().isEmpty()) {
 			hql.append(" AND level =:level");
 		}
 		Query query = super.entityManager.createQuery(hql.toString());
 		
-		if (!level.trim().isEmpty()) {
+		if (!level.toString().trim().isEmpty()) {
 			query.setParameter("level", level);
 		}
 		
