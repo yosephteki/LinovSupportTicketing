@@ -31,6 +31,21 @@ public class TiketDao extends CommonDao {
 		}
 		return tiket;
 	}
+	
+	@Transactional
+	public Tiket findByBk(String judul,String pic) {
+			List<Tiket> list = super.entityManager
+					.createQuery("FROM Tiket WHERE judul=:judul AND idPic=:pic")
+					.setParameter("judul", judul)
+					.setParameter("pic", pic)
+					.getResultList();
+			if (list.size()>0) {
+				return (Tiket)list.get(0);
+			}else {
+				return new Tiket();
+			}
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Transactional
@@ -90,11 +105,6 @@ public class TiketDao extends CommonDao {
 		List<Tiket> list = query.getResultList();
 		
 		return list;
-	}
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public void insertTiket(Tiket tiket) {
-		super.entityManager.merge(tiket);
 	}
 
 }

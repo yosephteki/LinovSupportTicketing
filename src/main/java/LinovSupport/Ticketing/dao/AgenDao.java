@@ -86,10 +86,10 @@ public class AgenDao extends CommonDao{
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM Agen WHERE 1=1");
 		if (!email.trim().isEmpty()) {
-			hql.append(" AND email=:email");
+			hql.append(" AND email LIKE =:email");
 		}
 		if (!nama.trim().isEmpty()) {
-			hql.append(" AND nama=:nama");
+			hql.append(" AND nama LIKE =:nama");
 		}
 		Query query = super.entityManager.createQuery(hql.toString());
 
