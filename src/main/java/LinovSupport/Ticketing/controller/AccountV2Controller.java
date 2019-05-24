@@ -117,7 +117,6 @@ public class AccountV2Controller {
 		}
 		return new ResponseEntity<>(account,HttpStatus.OK);
 	}
-
 	@PostMapping("")
 	private ResponseEntity<?> insertAccount(@RequestBody AccountV2 accountV2) throws ErrorException {
 		try {
