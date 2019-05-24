@@ -3,6 +3,9 @@
  */
 package LinovSupport.Ticketing.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import LinovSupport.Ticketing.enumeration.Level;
 import LinovSupport.Ticketing.exception.ErrorException;
+import LinovSupport.Ticketing.model.AccountV2;
+import LinovSupport.Ticketing.model.DetailTiket;
+import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.Tiket;
 import LinovSupport.Ticketing.service.TiketService;
 
@@ -34,12 +39,38 @@ public class TiketController {
 	
 	@GetMapping("/{idTiket}")
 	public ResponseEntity<?> findById(@PathVariable String idTiket){
+	Tiket tiket = tiketService.findById(idTiket);
+	Tiket tics = new Tiket();
+	tics.setIdTiket(tiket.getIdTiket());
+	
+//	List<tiket>
 	return ResponseEntity.ok(tiketService.findById(idTiket));
 	}
 	
 	@GetMapping("")
 	public ResponseEntity<?> findAll(){
-		return ResponseEntity.ok(tiketService.findAll());
+		try {
+			List<Tiket> tiket = tiketService.findAll();
+			
+			for(Tiket tics : tiket) {
+				Tiket newTiket = new Tiket();
+				PicV2 newPic = new PicV2();
+				String idpic = tics.getIdPic().getIdPic();
+				AccountV2 acc = tics.getIdPic().getAccount();
+				acc.setPics(null);
+				newPic.setIdPic(idpic);
+				newPic.setAccount(acc);
+				List<DetailTiket> detail = new ArrayList<DetailTiket>();
+				tics.setIdPic(newPic);
+				for(DetailTiket det : tics.getDetailTiket()) {
+					det.setIdTiket(newTiket);
+					detail.add(det);
+				}
+			}
+			return new ResponseEntity<>(tiket,HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 	
 	@GetMapping("/judul/{judul}/pic/{pic}/level/{level}")
@@ -58,7 +89,12 @@ public class TiketController {
 		String msg;
 		try {
 			tiketService.insertTiket(tiket);
-			msg= "Success creating ticket";
+			Tiket tiket2 = tiketService.findByBk(tiket.getJudulTiket(), tiket.getIdPic().getIdPic());
+			for(DetailTiket dtl : tiket.getDetailTiket()) {
+				dtl.setIdTiket(tiket2);
+				tiketService.insertDetail(dtl);
+			}
+			msg= "Data Tiket berhasil ditambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e)
 		{
