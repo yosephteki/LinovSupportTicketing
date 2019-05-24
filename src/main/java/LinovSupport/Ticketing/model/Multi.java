@@ -3,10 +3,13 @@
  */
 package LinovSupport.Ticketing.model;
 
+import javax.persistence.Entity;
+
 /**
  * @author Yosep Teki
  *
  */
+
 public class Multi {
 	private String username;
 	private String password;
