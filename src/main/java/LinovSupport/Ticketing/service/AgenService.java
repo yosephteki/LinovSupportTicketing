@@ -8,9 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import LinovSupport.Ticketing.dao.AccountV2Dao;
 import LinovSupport.Ticketing.dao.AgenDao;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.Account;
+import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Agen;
 
 @Service
@@ -18,6 +20,8 @@ public class AgenService {
 
 	@Autowired
 	private AgenDao agenDao;
+	private AccountV2Dao accDao;
+	private AccountV2 acc;
 
 	public Agen findById(String id) {
 		return agenDao.findById(id);
@@ -51,6 +55,9 @@ public class AgenService {
 		if (agenDao.isIdExist(agen.getIdAgen())) {
 			throw new ErrorException("id sudah ada");
 		}
+		if (!accDao.isIdExist(acc.getIdAccount())) {
+			throw new ErrorException("id account tidak ditemukan");
+		}
 		agenDao.insertAgen(agen);
 	}
 
@@ -67,6 +74,9 @@ public class AgenService {
 		}
 		if (!agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
 			throw new ErrorException("User tidak dtemukan!");
+		}
+		if (!accDao.isIdExist(acc.getIdAccount())) {
+			throw new ErrorException("id account tidak ditemukan");
 		}
 		agenDao.insertAgen(agen);
 	}
