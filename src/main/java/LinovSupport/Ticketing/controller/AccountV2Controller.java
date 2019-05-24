@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
@@ -46,6 +47,8 @@ public class AccountV2Controller {
 	
 	@Autowired
 	private UserService userService;
+	
+	BCrypt bc;
 
 	@GetMapping("")
 	public ResponseEntity<?> findAll() {
@@ -84,13 +87,35 @@ public class AccountV2Controller {
 
 	@GetMapping("/nama/{nama}")
 	public ResponseEntity<?> findByBk(@PathVariable String nama) {
-		return ResponseEntity.ok(accountV2Service.findByBk(nama));
-	}
+		AccountV2 account  = accountV2Service.findByBk(nama);
+		AccountV2 acc = new AccountV2();
+		acc.setIdAccount(account.getIdAccount());
+		List<PicV2> pics = new ArrayList<PicV2>();
+		for (PicV2 picss : account.getPics()) {
+			picss.setAccount(acc);
+			pics.add(picss);
+		}
+		account.setPics(pics);
+		return ResponseEntity.ok(account);
+	}	
 
+//	@GetMapping("/{nama}/{telepon}/{alamat}")
+//	public ResponseEntity<?> findByFilter(@PathVariable String nama, @PathVariable String telepon,
+//			@PathVariable String alamat) {
+//		return ResponseEntity.ok(accountV2Service.findByFilter(nama, telepon, alamat));		
+//	}
+	
 	@GetMapping("/{nama}/{telepon}/{alamat}")
 	public ResponseEntity<?> findByFilter(@PathVariable String nama, @PathVariable String telepon,
 			@PathVariable String alamat) {
-		return ResponseEntity.ok(accountV2Service.findByFilter(nama, telepon, alamat));
+		List<AccountV2> account = accountV2Service.findByFilter(nama, telepon, alamat);
+		
+		for(AccountV2 acc :  account) {
+			for(PicV2 pic : acc.getPics()) {
+				pic.setAccount(null);
+			}
+		}
+		return new ResponseEntity<>(account,HttpStatus.OK);
 	}
 
 	@PostMapping("")
@@ -101,19 +126,19 @@ public class AccountV2Controller {
 			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
 
 			for (PicV2 pic : accountV2.getPics()) {
-				pic.setAccount(idAccount);
+				pic.setAccount(idAccount);	
 				picV2Service.insertPic(pic);
 				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
 				
-				RandomString random =  new RandomString();
-				
+				RandomString randomString = new RandomString();
+				String pass = randomString.getPass();
+				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
 				User user = new User();
 				user.setUsername(pic.getEmail());
-				user.setPassword(random.getPass());
+				user.setPassword(encrypt);
 				user.setIdRole("c0e4e298-7dee-11e9-903a-78843c9a95db");
 				user.setDetailRole(idPic);
 				userService.insertUser(user);
-				
 				
 			}
 			msg = "Data berhasil di tambah";

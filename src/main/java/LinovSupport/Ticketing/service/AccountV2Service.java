@@ -29,38 +29,31 @@ public class AccountV2Service {
 		return accountV2Dao.findByBk(nama);
 	}
 	public void insertAccount(AccountV2 account) throws ErrorException{
-//		if (accountV2Dao.isIdExist(account.getIdAccount())) {
-//			throw new ErrorException("ID sudah digunakan!");
-//		}
-//		if (accountV2Dao.isBkExist(account.getNama())) {
-//			throw new ErrorException("nama account sudah ada");
-//		}
-//		if (account.getNama().isEmpty()) {
-//			throw new ErrorException("nama account tidak boleh kosong");
-//		}
-//		if (account.getAlamat().isEmpty()) {
-//			throw new ErrorException("alamat tidak boleh kosong");
-//		}
-//		if (account.getTelepon().isEmpty()) {
-//			throw new ErrorException("telepon tidak boleh kosong");
-//		}
-		accountV2Dao.insertAccount(account);
-	}
-	public void updateAccount(AccountV2 account) throws ErrorException{
-		if (!accountV2Dao.isIdExist(account.getIdAccount())) {
-			throw new ErrorException("id account tidak ditemukan");
-		}
-		if (!accountV2Dao.isBkExist(account.getNama())) {
-			throw new ErrorException("Nama PT tidak ditemukan");
-		}
-		if (!accountV2Dao.findById(account.getIdAccount()).getNama().equals(account.getNama())) {
-			throw new ErrorException("id account dan nama PT tidak cocok");
+		
+		if (account.getNama().isEmpty()) {
+			throw new ErrorException("nama account tidak boleh kosong");
 		}
 		if (account.getAlamat().isEmpty()) {
 			throw new ErrorException("alamat tidak boleh kosong");
 		}
 		if (account.getTelepon().isEmpty()) {
 			throw new ErrorException("telepon tidak boleh kosong");
+		}
+		if (accountV2Dao.isBkExist(account.getNama())) {
+			throw new ErrorException("nama account sudah ada");
+		}
+		accountV2Dao.insertAccount(account);
+	}
+	public void updateAccount(AccountV2 account) throws ErrorException{
+		
+		if (account.getAlamat().isEmpty()) {
+			throw new ErrorException("alamat tidak boleh kosong");
+		}
+		if (account.getTelepon().isEmpty()) {
+			throw new ErrorException("telepon tidak boleh kosong");
+		}
+		if (!accountV2Dao.isBkExist(account.getNama())) {
+			throw new ErrorException("Nama PT tidak ditemukan");
 		}
 		accountV2Dao.updateAccount(account);
 	}
@@ -73,7 +66,8 @@ public class AccountV2Service {
 	}
 	
 	public List<AccountV2> findByFilter(String telepon,String alamat,String nama){
-		return accountV2Dao.findByFilter(telepon, alamat, nama);
+		List<AccountV2> account = accountV2Dao.findByFilter(telepon, alamat, nama);
+		return account;
 	}
 
 	public List<AccountV2> findAll(){
