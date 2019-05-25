@@ -45,21 +45,30 @@ public class UserDao extends CommonDao{
 			return new User();
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public boolean isIdExist(String id) {
-		if (findById(id).getIdUser().isEmpty()) {
-			return false;
-		}else {
+		List<User> list = super.entityManager
+				.createQuery("FROM User WHERE idUser =:id")
+				.setParameter("id",id)
+				.getResultList();
+		if (list.size() > 0) {
 			return true;
+		}else {
+			return false;
 		}
 	}
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public boolean isBkExist(String bk) {
-		if (findByBk(bk).getIdUser().isEmpty()) {
-			return false;
-		}else {
+		List<User> list = super.entityManager
+				.createQuery("FROM User WHERE username=:username")
+				.setParameter("username", bk)
+				.getResultList();
+		if (list.size()>0) {
 			return true;
+		}else {
+			return false;
 		}
 	}
 	

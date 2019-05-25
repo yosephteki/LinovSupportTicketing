@@ -30,7 +30,16 @@ public class UserService {
 		return userDao.findByBk(bk);
 	}
 
-	public void insertUser(User user){
+	public void insertUser(User user) throws ErrorException{
+		if (userDao.isBkExist(user.getUsername())) {
+			throw new ErrorException("Username sudah digunakan");
+		}
+		if (user.getUsername().isEmpty()) {
+			throw new ErrorException("Username tidak boleh kosong");
+		}
+		if (user.getPassword().isEmpty()) {
+			throw new ErrorException("Password tidak boleh kosong");
+		}
 		userDao.insertUser(user);
 	}
 

@@ -64,7 +64,6 @@ public class PicV2Controller {
 
 	@GetMapping("")
 	public ResponseEntity<?>findAll() {
-//		return ResponseEntity.ok(picService.findAll());
 		try {	
 			List<PicV2> pics = picService.findAll();
 			
@@ -82,18 +81,32 @@ public class PicV2Controller {
 		
 	}
 	
-	@GetMapping("idPic/{idPic}")
-	public ResponseEntity<?> findById(@PathVariable String idUser) {
-		return ResponseEntity.ok(picService.findById(idUser));
+	@GetMapping("/{idPic}")
+	public ResponseEntity<?> findById(@PathVariable String idPic) {
+		PicV2 pic = picService.findById(idPic);
+		AccountV2 account = new AccountV2();
+		account.setIdAccount(pic.getAccount().getIdAccount());
+		account.setNama(pic.getAccount().getNama());
+		pic.setAccount(account);
+		return ResponseEntity.ok(pic);
 	}
+	
 
-	@GetMapping("idAccount/{idAccount/email/{email}}")
-	public ResponseEntity<?> findByBk(@PathVariable String account, String email) {
+	@GetMapping("idAccount/{idAccount}/email/{email}")
+	public ResponseEntity<?> findByBk(@PathVariable String account,@PathVariable String email) {
 		return ResponseEntity.ok(findByBk(account, email));
 		}
 
-	@GetMapping("user/{nama}/{email}")
-	public ResponseEntity<?> findByFilter(@PathVariable String email,String nama) {
-		return ResponseEntity.ok(picService.findByFilter(email,nama));
+	@GetMapping("/{email}/{nama}")
+	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable String nama) {
+		List<PicV2> picV2s = picService.findByFilter(email, nama);
+		
+		for(PicV2 pic : picV2s) {
+			AccountV2 account = new AccountV2();
+			account.setIdAccount(pic.getAccount().getIdAccount());
+			account.setNama(pic.getAccount().getNama());
+			pic.setAccount(account);
+		}
+		return new ResponseEntity<>(picV2s,HttpStatus.OK);
 	}
 }

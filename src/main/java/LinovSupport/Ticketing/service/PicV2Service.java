@@ -75,7 +75,8 @@ public class PicV2Service {
 	}
 
 	public List<PicV2> findByFilter(String email, String nama) {
-		return findByFilter(email, nama);
+		List<PicV2> pic = picV2Dao.findByFilter(email, nama);
+		return pic;
 	}
 	
 }

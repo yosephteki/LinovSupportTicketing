@@ -93,12 +93,12 @@ public class PicV2Dao extends CommonDao {
 	@Transactional
 	public List<PicV2> findByFilter(String email, String nama) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("FROM Agent WHERE 1=1");
+		hql.append("FROM PicV2 WHERE 1=1");
 		if (!email.trim().isEmpty()) {
-			hql.append(" AND email=:email");
+			hql.append(" AND email =:email");
 		}
 		if (!nama.trim().isEmpty()) {
-			hql.append(" AND nama=:nama");
+			hql.append(" AND nama =:nama");
 		}
 		Query query = super.entityManager.createQuery(hql.toString());
 

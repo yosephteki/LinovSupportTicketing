@@ -49,8 +49,6 @@ public class AccountV2Controller {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private AccountV2Dao accountV2Dao;
 	
 	BCrypt bc;
 
@@ -120,24 +118,24 @@ public class AccountV2Controller {
 		String msg;
 		try {
 			accountV2Service.insertAccount(accountV2);
-//			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
-//
-//			for (PicV2 pic : accountV2.getPics()) {
-//				pic.setAccount(idAccount);	
-//				picV2Service.insertPic(pic);
-//				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
-//				
-//				RandomString randomString = new RandomString();
-//				String pass = randomString.getPass();
-//				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
-//				User user = new User();
-//				user.setUsername(pic.getEmail());
-//				user.setPassword(encrypt);
-//				user.setIdRole("c0e4e298-7dee-11e9-903a-78843c9a95db");
-//				user.setDetailRole(idPic);
-//				userService.insertUser(user);
-//				System.out.println("wew");
-//			}
+			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
+
+			for (PicV2 pic : accountV2.getPics()) {
+				pic.setAccount(idAccount);	
+				picV2Service.insertPic(pic);
+				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
+				
+				RandomString randomString = new RandomString();
+				String pass = randomString.getPass();
+				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
+				User user = new User();
+				user.setUsername(pic.getEmail());
+				user.setPassword(encrypt);
+				user.setIdRole("c0e4e298-7dee-11e9-903a-78843c9a95db");
+				user.setDetailRole(idPic);
+				userService.insertUser(user);
+				
+			}
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {

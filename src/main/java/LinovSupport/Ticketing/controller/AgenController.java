@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import LinovSupport.Ticketing.encrypt.BCrypt;
+import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.Agen;
 import LinovSupport.Ticketing.model.Multi;
@@ -36,6 +38,8 @@ public class AgenController {
 	private AgenService agenService;
 	@Autowired
 	private UserService userService;
+	
+	private BCrypt bc;
 
 	@PostMapping("")
 	public ResponseEntity<?> insertAgen(@RequestBody Multi agen) throws ErrorException {
@@ -51,19 +55,21 @@ public class AgenController {
 			
 			agenService.insertAgent(agent);
 			
-//			Agen newAgen = new Agen();
-//			newAgen = agenService.findByBK(agen.getAccount(),agen.getEmail());
-//			
-//			System.out.println(agen.getRole());
-//			
-//			User user = new User();
-//			user.setUsername(agen.getUsername());
-//			user.setPassword(agen.getPassword());
-//			user.setIdRole(agen.getRole());
-//			user.setDetailRole(newAgen.getIdAgen());
-//
-//			
-//			userService.insertUser(user);
+			Agen newAgen = new Agen();
+			newAgen = agenService.findByBK(agen.getAccount(),agen.getEmail());
+			
+			System.out.println(agen.getRole());
+			RandomString randomString = new RandomString();
+			String pass = agen.getPassword();
+			String encrypt = BCrypt.hashpw(pass,bc.gensalt());
+			User user = new User();
+			user.setUsername(agen.getUsername());
+			user.setPassword(encrypt);
+			user.setIdRole(agen.getRole());
+			user.setDetailRole(newAgen.getIdAgen());
+
+			
+			userService.insertUser(user);
 			
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
@@ -73,10 +79,10 @@ public class AgenController {
 	}
 	
 	@PutMapping("")
-	public ResponseEntity<?> update(@RequestBody Agen agen) throws ErrorException{
+	public ResponseEntity<?> updateAgen(@RequestBody Agen agen) throws ErrorException{
 		String msg;
 		try {
-			agenService.update(agen);
+			agenService.updateAgen(agen);
 			msg="Data berhasil diubah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
