@@ -48,24 +48,22 @@ public class AgenController {
 			agent.setEmail(agen.getEmail());
 			agent.setActive(agen.isActive());
 			agent.setNama(agen.getNama());
-			System.out.println(agen.getRole());
-			System.out.println(agen.getEmail());
 			
 			agenService.insertAgent(agent);
 			
-			Agen newAgen = new Agen();
-			newAgen = agenService.findByBK(agen.getAccount(),agen.getEmail());
-			
-			System.out.println(agen.getRole());
-			
-			User user = new User();
-			user.setUsername(agen.getUsername());
-			user.setPassword(agen.getPassword());
-			user.setIdRole(agen.getRole());
-			user.setDetailRole(newAgen.getIdAgen());
-
-			
-			userService.insertUser(user);
+//			Agen newAgen = new Agen();
+//			newAgen = agenService.findByBK(agen.getAccount(),agen.getEmail());
+//			
+//			System.out.println(agen.getRole());
+//			
+//			User user = new User();
+//			user.setUsername(agen.getUsername());
+//			user.setPassword(agen.getPassword());
+//			user.setIdRole(agen.getRole());
+//			user.setDetailRole(newAgen.getIdAgen());
+//
+//			
+//			userService.insertUser(user);
 			
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
@@ -104,6 +102,10 @@ public class AgenController {
 	@GetMapping("id/{id}")
 	public ResponseEntity<?> findById(@PathVariable String id){
 		return ResponseEntity.ok(agenService.findById(id));
+	}
+	@GetMapping("")
+	public ResponseEntity<?> findAll(){
+		return ResponseEntity.ok(agenService.findAll());
 	}
 	
 }

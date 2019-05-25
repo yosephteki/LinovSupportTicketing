@@ -42,23 +42,32 @@ public class AccountV2Dao extends CommonDao{
 			return new AccountV2();
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public boolean isIdExist(String id) {
-		if (!findById(id).getIdAccount().isEmpty()) {
+		List<AccountV2> list = super.entityManager
+				.createQuery("FROM AccountV2 WHERE idAccount=:id")
+				.setParameter("id", id)
+				.getResultList();
+		if (list.size()>0) {
 			return true;
 		}else {
 			return false;
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public boolean isBkExist(String nama) {
-		if (!findByBk(nama).getIdAccount().isEmpty()) {
+		List<AccountV2> list = super.entityManager
+				.createQuery("FROM AccountV2 WHERE nama=:nama")
+				.setParameter("nama", nama)
+				.getResultList();
+		if (list.size()>0) {
 			return true;
 		}else {
 			return false;
 		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")

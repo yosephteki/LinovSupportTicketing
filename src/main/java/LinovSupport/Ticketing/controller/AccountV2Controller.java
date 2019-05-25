@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import LinovSupport.Ticketing.dao.AccountV2Dao;
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
@@ -47,6 +48,9 @@ public class AccountV2Controller {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AccountV2Dao accountV2Dao;
 	
 	BCrypt bc;
 
@@ -98,12 +102,6 @@ public class AccountV2Controller {
 		account.setPics(pics);
 		return ResponseEntity.ok(account);
 	}	
-
-//	@GetMapping("/{nama}/{telepon}/{alamat}")
-//	public ResponseEntity<?> findByFilter(@PathVariable String nama, @PathVariable String telepon,
-//			@PathVariable String alamat) {
-//		return ResponseEntity.ok(accountV2Service.findByFilter(nama, telepon, alamat));		
-//	}
 	
 	@GetMapping("/{nama}/{telepon}/{alamat}")
 	public ResponseEntity<?> findByFilter(@PathVariable String nama, @PathVariable String telepon,
@@ -119,27 +117,27 @@ public class AccountV2Controller {
 	}
 	@PostMapping("")
 	private ResponseEntity<?> insertAccount(@RequestBody AccountV2 accountV2) throws ErrorException {
+		String msg;
 		try {
-			String msg;
 			accountV2Service.insertAccount(accountV2);
-			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
-
-			for (PicV2 pic : accountV2.getPics()) {
-				pic.setAccount(idAccount);	
-				picV2Service.insertPic(pic);
-				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
-				
-				RandomString randomString = new RandomString();
-				String pass = randomString.getPass();
-				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
-				User user = new User();
-				user.setUsername(pic.getEmail());
-				user.setPassword(encrypt);
-				user.setIdRole("c0e4e298-7dee-11e9-903a-78843c9a95db");
-				user.setDetailRole(idPic);
-				userService.insertUser(user);
-				
-			}
+//			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
+//
+//			for (PicV2 pic : accountV2.getPics()) {
+//				pic.setAccount(idAccount);	
+//				picV2Service.insertPic(pic);
+//				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
+//				
+//				RandomString randomString = new RandomString();
+//				String pass = randomString.getPass();
+//				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
+//				User user = new User();
+//				user.setUsername(pic.getEmail());
+//				user.setPassword(encrypt);
+//				user.setIdRole("c0e4e298-7dee-11e9-903a-78843c9a95db");
+//				user.setDetailRole(idPic);
+//				userService.insertUser(user);
+//				System.out.println("wew");
+//			}
 			msg = "Data berhasil di tambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {

@@ -61,11 +61,11 @@ public class AgenDao extends CommonDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public boolean isBkExist(Account bk1, String bk2) {
+	public boolean isBkExist(Account account, String email) {
 		List<Agen> list = super.entityManager
 				.createQuery("FROM Agen WHERE account=:idacc AND email=:email")
-				.setParameter("idacc", bk1)
-				.setParameter("email", bk2)
+				.setParameter("idacc", account)
+				.setParameter("email", email)
 				.getResultList();
 		if (list.size() > 0) {
 			return true;
@@ -86,10 +86,10 @@ public class AgenDao extends CommonDao{
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM Agen WHERE 1=1");
 		if (!email.trim().isEmpty()) {
-			hql.append(" AND email LIKE =:email");
+			hql.append(" AND email =:email");
 		}
 		if (!nama.trim().isEmpty()) {
-			hql.append(" AND nama LIKE =:nama");
+			hql.append(" AND nama =:nama");
 		}
 		Query query = super.entityManager.createQuery(hql.toString());
 
@@ -101,6 +101,14 @@ public class AgenDao extends CommonDao{
 		}
 		List<Agen> agens = query.getResultList();
 		return agens;
+	}
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Agen> findAll(){
+		List<Agen> list = super.entityManager
+				.createQuery("FROM Agen")
+				.getResultList();
+		return list;
 	}
 	
 //	@Transactional

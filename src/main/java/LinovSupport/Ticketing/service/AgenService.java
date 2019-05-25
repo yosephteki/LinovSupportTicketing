@@ -20,7 +20,10 @@ public class AgenService {
 
 	@Autowired
 	private AgenDao agenDao;
+	
+	@Autowired
 	private AccountV2Dao accDao;
+	
 	private AccountV2 acc;
 
 	public Agen findById(String id) {
@@ -37,6 +40,9 @@ public class AgenService {
 //	
 	public void insertAgent(Agen agen) throws ErrorException {
 
+		if (agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
+			throw new ErrorException("agen sudah ada!");
+		}
 		if (agen.getEmail().isEmpty()) {
 			throw new ErrorException("email tidak boleh kosong");
 		}
@@ -45,18 +51,6 @@ public class AgenService {
 		}
 		if (agen.getNama().isEmpty()) {
 			throw new ErrorException("nama tidak boleh kosong");
-		}
-		if (agen.isActive() == false) {
-			throw new ErrorException("status active tidak boleh kosong");
-		}
-		if (agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
-			throw new ErrorException("User sudah ada!");
-		}
-		if (agenDao.isIdExist(agen.getIdAgen())) {
-			throw new ErrorException("id sudah ada");
-		}
-		if (!accDao.isIdExist(acc.getIdAccount())) {
-			throw new ErrorException("id account tidak ditemukan");
 		}
 		agenDao.insertAgen(agen);
 	}
@@ -92,6 +86,9 @@ public class AgenService {
 	public List<Agen> findByFilter(String email, String nama) {
 		List<Agen> agen = agenDao.findByFilter(email, nama);
 		return agen;
+	}
+	public List<Agen> findAll(){
+		return agenDao.findAll();
 	}
 
 }

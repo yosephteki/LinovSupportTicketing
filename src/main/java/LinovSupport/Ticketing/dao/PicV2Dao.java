@@ -47,32 +47,31 @@ public class PicV2Dao extends CommonDao {
 			return new PicV2();
 		}
 	}
-	
+	@SuppressWarnings("unchecked")
+	@Transactional
 	public boolean isIdExist(String id) {
-		if (!findById(id).getIdPic().isEmpty()) {
+		List<PicV2> list = super.entityManager
+				.createQuery("FROM PicV2 WHERE idPic=:id")
+				.setParameter("id", id)
+				.getResultList();
+		if (list.size() > 0) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-//	@SuppressWarnings("unchecked")
-//	@Transactional
-//	public boolean isBkExist(String bk1, String bk2) {
-//		List<Pic> list = super.entityManager
-//				.createQuery("FROM Pic WHERE idAccount=:idacc AND email=:email")
-//				.setParameter("idacc", bk1)
-//				.setParameter("email", bk2)
-//				.getResultList();
-//		if (list.size() > 0) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional
 	public boolean isBkExist(AccountV2 account,String email) {
-		if (!findByBk(account, email).getIdPic().isEmpty()) {
+		List<PicV2> list = super.entityManager
+				.createQuery("FROM PicV2 WHERE account=:account AND email=:email")
+				.setParameter("account", account)
+				.setParameter("email", email)
+				.getResultList();
+		if (list.size() > 0) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
