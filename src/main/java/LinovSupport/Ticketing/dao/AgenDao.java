@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import LinovSupport.Ticketing.model.Account;
+import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Agen;
 /**
  * @author Yosep Teki
@@ -31,7 +32,21 @@ public class AgenDao extends CommonDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Agen findByBk(Account bk1, String bk2) {
+	public Agen findByAccount(AccountV2 accountV2){
+		List<Agen> list = super.entityManager
+				.createQuery("FROM Agen WHERE account=:accountV2")
+				.setParameter("accountV2", accountV2)
+				.getResultList();
+		if (list.size() >0) {
+			return list.get(0);
+		}else {
+			return new Agen();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Agen findByBk(AccountV2 bk1, String bk2) {
 		List<Agen> list = super.entityManager
 				.createQuery("FROM Agen WHERE account=:idacc AND email=:email")
 				.setParameter("idacc", bk1)
@@ -61,7 +76,7 @@ public class AgenDao extends CommonDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public boolean isBkExist(Account account, String email) {
+	public boolean isBkExist(AccountV2 account, String email) {
 		List<Agen> list = super.entityManager
 				.createQuery("FROM Agen WHERE account=:idacc AND email=:email")
 				.setParameter("idacc", account)

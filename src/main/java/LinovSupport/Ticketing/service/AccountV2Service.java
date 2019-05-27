@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import LinovSupport.Ticketing.dao.AccountV2Dao;
+import LinovSupport.Ticketing.dao.AgenDao;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
+import LinovSupport.Ticketing.model.Agen;
 
 /**
  * @author Yosep Teki
@@ -80,6 +82,10 @@ public class AccountV2Service {
 
 	public List<AccountV2> findAll() {
 		return accountV2Dao.findAll();
+	}
+	
+	public Agen findAgen(AccountV2 account) {
+		return accountV2Dao.findAgen(account);
 	}
 
 }

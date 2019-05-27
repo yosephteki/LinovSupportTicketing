@@ -15,7 +15,7 @@ public class Multi {
 	private String password;
 	private String role;
 	private String id;
-	private Account account;
+	private AccountV2 account;
 	private String email;
 	private String nama;
 	private boolean active;
@@ -53,11 +53,11 @@ public class Multi {
 		this.id = id;
 	}
 
-	public Account getAccount() {
+	public AccountV2 getAccount() {
 		return account;
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(AccountV2 account) {
 		this.account = account;
 	}
 

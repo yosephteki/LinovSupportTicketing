@@ -30,7 +30,7 @@ public class Agen {
 	
 	@OneToOne
 	@JoinColumn(name="id_account",referencedColumnName="id_account")
-	private Account account;
+	private AccountV2 account;
 	
 	@Column(name="nama")
 	private String nama;
@@ -49,11 +49,11 @@ public class Agen {
 		this.idAgen = idAgent;
 	}
 
-	public Account getAccount() {
+	public AccountV2 getAccount() {
 		return account;
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(AccountV2 account) {
 		this.account = account;
 	}
 

@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
+import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Agen;
 import LinovSupport.Ticketing.model.Multi;
 import LinovSupport.Ticketing.model.User;
@@ -112,6 +115,12 @@ public class AgenController {
 	@GetMapping("")
 	public ResponseEntity<?> findAll(){
 		return ResponseEntity.ok(agenService.findAll());
+	}
+	@GetMapping("/acc")
+	public ResponseEntity<?> findByAccount(){
+		AccountV2 acc = new AccountV2();
+		acc.setIdAccount("6db55088-c27b-4777-bb20-b44cde31adf2");
+		return ResponseEntity.ok(agenService.findByAccount(acc));
 	}
 	
 }

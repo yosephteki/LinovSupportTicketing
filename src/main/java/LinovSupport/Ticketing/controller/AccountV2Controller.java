@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import LinovSupport.Ticketing.dao.AccountV2Dao;
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
@@ -28,6 +26,7 @@ import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.service.AccountV2Service;
+import LinovSupport.Ticketing.service.AgenService;
 import LinovSupport.Ticketing.service.PicV2Service;
 import LinovSupport.Ticketing.service.UserService;
 
@@ -49,6 +48,8 @@ public class AccountV2Controller {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private AgenService agenService;
 	
 	BCrypt bc;
 
@@ -57,7 +58,6 @@ public class AccountV2Controller {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
 			AccountV2 newAccount = new AccountV2();
-			
 			for (AccountV2 acc : account) {
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
@@ -76,6 +76,10 @@ public class AccountV2Controller {
 	@GetMapping("/{idAccount}")
 	public ResponseEntity<?> findById(@PathVariable String idAccount) {
 		AccountV2 account = accountV2Service.findById(idAccount);
+		AccountV2 acc1 = new AccountV2();
+		acc1.setIdAccount(account.getIdAccount());
+		account.setAgen(agenService.findByAccount(acc1));
+		
 		AccountV2 acc = new AccountV2();
 		acc.setIdAccount(account.getIdAccount());
 		List<PicV2> pics = new ArrayList<PicV2>();
@@ -84,6 +88,7 @@ public class AccountV2Controller {
 			pics.add(picss);
 		}
 		account.setPics(pics);
+		account.getAgen().setAccount(null);
 		return ResponseEntity.ok(account);
 	}
 

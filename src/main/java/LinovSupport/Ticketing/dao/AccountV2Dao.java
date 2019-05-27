@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import LinovSupport.Ticketing.model.AccountV2;
+import LinovSupport.Ticketing.model.Agen;
 
 /**
  * @author Yosep Teki
@@ -125,6 +126,14 @@ public class AccountV2Dao extends CommonDao{
 				.createQuery("FROM AccountV2")
 				.getResultList();
 		return list;
+	}
+	
+	public Agen findAgen(AccountV2 account) {
+		Agen agen =	(Agen) super.entityManager
+				.createQuery("FROM Agen WHERE account=:acc")
+				.setParameter("acc", account)
+				.getSingleResult();
+		return agen;
 	}
 		
 }

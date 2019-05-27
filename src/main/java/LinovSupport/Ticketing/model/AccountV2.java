@@ -50,7 +50,18 @@ public class AccountV2 {
 			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<PicV2> pics;
 	
+	@OneToOne
+	private Agen agen;
 	
+
+	public Agen getAgen() {
+		return agen;
+	}
+
+	public void setAgen(Agen agen) {
+		this.agen = agen;
+	}
+
 	public String getIdAccount() {
 		return idAccount;
 	}

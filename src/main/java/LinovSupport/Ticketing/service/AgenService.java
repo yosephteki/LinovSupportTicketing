@@ -20,24 +20,15 @@ public class AgenService {
 
 	@Autowired
 	private AgenDao agenDao;
-	
-	@Autowired
-	private AccountV2Dao accDao;
-	
-	private AccountV2 acc;
 
 	public Agen findById(String id) {
 		return agenDao.findById(id);
 	}
 
-	public Agen findByBK(Account bk1, String bk2) {
+	public Agen findByBK(AccountV2 bk1, String bk2) {
 		return agenDao.findByBk(bk1, bk2);
 	}
 
-//	public void insertAgen(Agen agen) {
-//		agenDao.insertAgen(agen);
-//	}
-//	
 	public void insertAgent(Agen agen) throws ErrorException {
 
 		if (agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
@@ -88,6 +79,10 @@ public class AgenService {
 	}
 	public List<Agen> findAll(){
 		return agenDao.findAll();
+	}
+	
+	public Agen findByAccount(AccountV2 accountV2){
+		return agenDao.findByAccount(accountV2);
 	}
 
 }
