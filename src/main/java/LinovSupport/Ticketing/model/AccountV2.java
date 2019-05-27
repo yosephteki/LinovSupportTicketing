@@ -43,7 +43,7 @@ public class AccountV2 {
 	@Column(name = "id_gambar")
 	private String idGambar;
 	
-	@Column(name = "active")
+	@Column(name = "isactive")
 	private boolean active;
 	
 	@OneToMany(mappedBy = "account", targetEntity = PicV2.class, 

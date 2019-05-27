@@ -136,7 +136,7 @@ public class AccountV2Controller {
 				User user = new User();
 				user.setUsername(pic.getEmail());
 				user.setPassword(encrypt);
-				user.setIdRole("c0e4e298-7dee-11e9-903a-78843c9a95db");
+				user.setIdRole("b48efe72-8058-11e9-9894-78843c9a95db");
 				user.setDetailRole(idPic);
 				userService.insertUser(user);
 				

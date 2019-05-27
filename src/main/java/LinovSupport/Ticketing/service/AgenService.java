@@ -7,11 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import LinovSupport.Ticketing.dao.AccountV2Dao;
 import LinovSupport.Ticketing.dao.AgenDao;
 import LinovSupport.Ticketing.exception.ErrorException;
-import LinovSupport.Ticketing.model.Account;
 import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Agen;
 

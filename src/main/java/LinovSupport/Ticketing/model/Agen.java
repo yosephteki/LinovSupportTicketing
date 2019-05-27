@@ -2,7 +2,6 @@
  * 
  */
 package LinovSupport.Ticketing.model;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,13 +31,13 @@ public class Agen {
 	@JoinColumn(name="id_account",referencedColumnName="id_account")
 	private AccountV2 account;
 	
-	@Column(name="nama")
-	private String nama;
-	
 	@Column(name="email")
 	private String email;
 	
-	@Column(name="active")
+	@Column(name="nama")
+	private String nama;
+	
+	@Column(name="isactive")
 	private boolean active;
 
 	public String getIdAgen() {

@@ -24,7 +24,7 @@ public class Admin {
 	@Column(name="email")
 	private String email;
 	
-	@Column(name="active")
+	@Column(name="isactive")
 	private boolean active;
 
 	public String getIdAdmin() {

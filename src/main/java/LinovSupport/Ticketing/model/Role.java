@@ -26,11 +26,11 @@ public class Role {
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	private String idRole;
 	
-	@Column(name="nama_role")
-	private String nama;
-	
 	@Column(name="kode_role")
 	private String kodeRole;
+	
+	@Column(name="nama_role")
+	private String nama;
 
 	public String getIdRole() {
 		return idRole;

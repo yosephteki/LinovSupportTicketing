@@ -25,8 +25,19 @@ public class Gambar {
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	private String idGambar;
 
+	@Column(name ="kode_gambar")
+	private int kodeGambar;
+	
 	@Column(name = "gambar")
 	private byte[] gambar;
+	
+	public int getKodeGambar() {
+		return kodeGambar;
+	}
+
+	public void setKodeGambar(int kodeGambar) {
+		this.kodeGambar = kodeGambar;
+	}
 
 	public String getIdGambar() {
 		return idGambar;

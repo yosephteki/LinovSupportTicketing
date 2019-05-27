@@ -38,13 +38,13 @@ public class PicV2 {
 	@JoinColumn(name="id_account",referencedColumnName="id_account")
 	private AccountV2 account;
 	
+	@Column(name = "email")
+	private String email;
+	
 	@Column(name = "nama")
 	private String nama;
 
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "active")
+	@Column(name = "isactive")
 	private boolean active;
 
 	public String getIdPic() {

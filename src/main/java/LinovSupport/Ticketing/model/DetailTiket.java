@@ -37,6 +37,9 @@ public class DetailTiket {
 	@Column(name="id_pengirim")
 	private String pengirim;
 	
+	@Column(name="id_penerima")
+	private String penerima;
+	
 	@Column(name="pesan")
 	private String pesan;
 	
@@ -101,10 +104,13 @@ public class DetailTiket {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-	
-	
-	
+
+	public String getPenerima() {
+		return penerima;
+	}
+
+	public void setPenerima(String penerima) {
+		this.penerima = penerima;
+	}
 
 }

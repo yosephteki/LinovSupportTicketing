@@ -21,6 +21,7 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.GenericGenerator;
 
 import LinovSupport.Ticketing.enumeration.Level;
+import LinovSupport.Ticketing.enumeration.Status;
 
 /**
  * @author Yosep Teki
@@ -47,8 +48,20 @@ public class Tiket {
 	@Column(name = "level_ticket")
 	private Level level;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
+	private Status status;
+	
 	@OneToMany(mappedBy = "idTiket", targetEntity = DetailTiket.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<DetailTiket> detailTiket;
+	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
 	public String getIdTiket() {
 		return idTiket;
