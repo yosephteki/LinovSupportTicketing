@@ -51,7 +51,6 @@ public class TiketController {
 	public ResponseEntity<?> findAll(){
 		try {
 			List<Tiket> tiket = tiketService.findAll();
-			
 			for(Tiket tics : tiket) {
 				Tiket newTiket = new Tiket();
 				PicV2 newPic = new PicV2();
@@ -71,7 +70,7 @@ public class TiketController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-	}
+	} 
 	
 	@GetMapping("/judul/{judul}/pic/{pic}/level/{level}")
 	public ResponseEntity<?> findByFilter(@PathVariable String judul, 

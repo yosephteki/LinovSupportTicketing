@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -48,6 +49,7 @@ public class AccountV2 {
 	@OneToMany(mappedBy = "account", targetEntity = PicV2.class, 
 			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<PicV2> pics;
+	
 	
 	public String getIdAccount() {
 		return idAccount;

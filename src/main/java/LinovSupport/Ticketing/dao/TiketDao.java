@@ -128,6 +128,15 @@ public class TiketDao extends CommonDao {
 
 		return list;
 	}
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<DetailTiket> findByStatus(String status){
+		List<DetailTiket> tiket = super.entityManager
+				.createQuery("FROM DetailTiket WHERE status =: status")
+				.setParameter("status", status)
+				.getResultList();
+		return tiket;
+	}
 
 	@Transactional
 	public void insertTiket(Tiket tiket) {
