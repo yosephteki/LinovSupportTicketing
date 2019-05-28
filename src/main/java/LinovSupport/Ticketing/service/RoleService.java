@@ -35,6 +35,9 @@ public class RoleService {
 		if(roleDao.isBkExist(role.getKodeRole())) {
 			throw new ErrorException("Kode role sudah digunakan");
 		}
+		if(role.getKodeRole().isEmpty()) {
+			throw new ErrorException("kode tidakboleh kosong");
+		}
 		if(role.getNama().isEmpty()) {
 			throw new ErrorException("nama tidak boleh kosong");
 		}
