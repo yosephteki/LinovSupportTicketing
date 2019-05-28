@@ -18,15 +18,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
+import LinovSupport.Ticketing.model.Gambar;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.service.AccountV2Service;
 import LinovSupport.Ticketing.service.AgenService;
+import LinovSupport.Ticketing.service.GambarService;
 import LinovSupport.Ticketing.service.PicV2Service;
 import LinovSupport.Ticketing.service.UserService;
 
@@ -50,6 +55,9 @@ public class AccountV2Controller {
 	
 	@Autowired
 	private AgenService agenService;
+	
+	@Autowired
+	private GambarService gambarService;
 	
 	BCrypt bc;
 
@@ -142,6 +150,29 @@ public class AccountV2Controller {
 				
 			}
 			msg = "Data berhasil di tambah";
+			return ResponseEntity.ok(msg);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	@PostMapping("/param")
+	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,@RequestParam("nama")String nama,
+			@RequestParam("telepon")String telepon,@RequestParam("alamat")String alamat,@RequestParam("gambar")MultipartFile gambar,
+			@RequestParam("active")boolean active){
+		String msg;
+		try {
+			AccountV2 account = new AccountV2();
+			account.setIdAccount(idaccount);
+			account.setNama(nama);
+			account.setTelepon(telepon);
+			account.setAlamat(alamat);
+			account.setActive(active);
+			accountV2Service.insertAccount(account);
+			
+			Gambar fileGambar = new Gambar();
+			fileGambar.setGambar(gambar.getBytes());
+			gambarService.create(fileGambar);
+			msg = "success";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
