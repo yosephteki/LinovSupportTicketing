@@ -52,7 +52,17 @@ public class AccountV2 {
 	
 	@OneToOne
 	private Agen agen;
+
+	@OneToOne
+	private Gambar gambar;
 	
+	public Gambar getGambar() {
+		return gambar;
+	}
+
+	public void setGambar(Gambar gambar) {
+		this.gambar = gambar;
+	}
 
 	public Agen getAgen() {
 		return agen;

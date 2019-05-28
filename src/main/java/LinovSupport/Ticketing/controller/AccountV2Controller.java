@@ -72,7 +72,6 @@ public class AccountV2Controller {
 				}
 				acc.setPics(Pics);
 			}
-
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -85,7 +84,7 @@ public class AccountV2Controller {
 		AccountV2 acc1 = new AccountV2();
 		acc1.setIdAccount(account.getIdAccount());
 		account.setAgen(agenService.findByAccount(acc1));
-		
+		account.setGambar(gambarService.findById(account.getIdGambar()));
 		AccountV2 acc = new AccountV2();
 		acc.setIdAccount(account.getIdAccount());
 		List<PicV2> pics = new ArrayList<PicV2>();
@@ -95,6 +94,7 @@ public class AccountV2Controller {
 		}
 		account.setPics(pics);
 		account.getAgen().setAccount(null);
+		
 		return ResponseEntity.ok(account);
 	}
 
