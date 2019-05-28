@@ -5,11 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="tbl_admin")
+@Table(name="tbl_admin",uniqueConstraints = @UniqueConstraint(columnNames = {  "email" } ))
 public class Admin {
 
 	@Id
