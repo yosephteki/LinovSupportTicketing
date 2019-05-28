@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
@@ -176,9 +178,25 @@ public class AccountV2Controller {
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} 
+	}
+
+	@PostMapping("/params")
+	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount){
+//		String msg;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			AccountV2 account = mapper.readValue(inputAccount,AccountV2.class);
+			
+			
+//			msg = "success";
+			return ResponseEntity.ok(account);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 
+	
 	@PutMapping("")
 	public ResponseEntity<?> updateAccount(@RequestBody AccountV2 account) throws ErrorException {
 		String msg;

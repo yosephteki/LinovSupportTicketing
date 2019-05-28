@@ -37,7 +37,20 @@ public class PicV2Controller {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-
+//	@PostMapping("/list")
+//	public ResponseEntity<?> insertListPic(@r List<PicV2> pics) throws ErrorException{
+//		String msg;
+//		try {
+//			for(PicV2 pic : pics) {
+//				System.out.println(pic.getNama());
+//			}
+//			msg="Data Pic berhasil ditambahkan";
+//			return ResponseEntity.ok(msg);
+//		}catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//		}
+//	}
+	
 	@PutMapping("")
 	public ResponseEntity<?> update(@RequestBody PicV2 pic) throws ErrorException {
 		String msg;
