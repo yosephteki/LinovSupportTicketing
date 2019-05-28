@@ -5,8 +5,6 @@ package LinovSupport.Ticketing.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
@@ -182,21 +178,43 @@ public class AccountV2Controller {
 	}
 
 	@PostMapping("/params")
-	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount){
-//		String msg;
+	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,@RequestParam("gambar")MultipartFile inputGambar){
+		String msg;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			AccountV2 account = mapper.readValue(inputAccount,AccountV2.class);
 			
+			AccountV2 accountV2 = new AccountV2();
+			accountV2.setIdAccount(account.getIdAccount());
+			accountV2.setNama(account.getNama());
+			accountV2.setTelepon(account.getTelepon());
+			accountV2.setAlamat(account.getAlamat());
+			accountV2.setActive(account.isActive());
 			
-//			msg = "success";
-			return ResponseEntity.ok(account);
+			
+			Gambar gambar = new Gambar();
+			int kodeGambar = accountV2.getNama().hashCode();
+			gambar.setKodeGambar(kodeGambar);
+			gambar.setGambar(inputGambar.getBytes());
+			gambarService.create(gambar);
+			String idGambar = gambarService.findByBk(kodeGambar).getIdGambar();
+			accountV2.setIdGambar(idGambar);
+			
+			accountV2Service.insertAccount(accountV2);
+			AccountV2 newAccount = accountV2Service.findByBk(accountV2.getNama());
+			for(PicV2 pic : account.getPics()) {
+				pic.setAccount(newAccount);
+				
+				picV2Service.insertPic(pic);
+			}
+			
+			msg="Data Account berhasil ditambahkan";
+			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 
-	
 	@PutMapping("")
 	public ResponseEntity<?> updateAccount(@RequestBody AccountV2 account) throws ErrorException {
 		String msg;

@@ -32,5 +32,9 @@ public class GambarService {
 	public Gambar findById(String id) {
 		return gambarDao.findById(id);
 	}
+	
+	public Gambar findByBk(int kode) {
+		return gambarDao.findByBk(kode);
+	}
 
 }

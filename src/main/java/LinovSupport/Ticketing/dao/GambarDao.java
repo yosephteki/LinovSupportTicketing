@@ -28,6 +28,21 @@ public Gambar findById(String id) {
 		return new Gambar();
 	}
 }
+
+@SuppressWarnings("unchecked")
+@Transactional
+public Gambar findByBk(int kode) {
+	List<Gambar> list = super.entityManager
+			.createQuery("FROM Gambar WHERE kodeGambar=:kode")
+			.setParameter("kode", kode)
+			.getResultList();
+	if (list.size()>0) {
+		return list.get(0);
+	}else {
+		return new Gambar();
+	}
+}
+
 	
 @Transactional
 public void create(Gambar gambar) {
