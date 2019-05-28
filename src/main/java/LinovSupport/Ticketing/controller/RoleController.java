@@ -82,7 +82,7 @@ public class RoleController {
 		String msg;
 		try {
 			roleService.deleteRole(id);
-			msg = "sucess deleting role";
+			msg = "success deleting role";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
