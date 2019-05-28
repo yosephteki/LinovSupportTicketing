@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import LinovSupport.Ticketing.model.Account;
 import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Agen;
 /**
