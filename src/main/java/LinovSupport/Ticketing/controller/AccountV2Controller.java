@@ -73,6 +73,7 @@ public class AccountV2Controller {
 					Pics.add(pic);
 				}
 				acc.setPics(Pics);
+//				acc.setGambar(gambarService.findById(acc.getIdGambar()));
 			}
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
