@@ -24,6 +24,7 @@ import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
+import LinovSupport.Ticketing.model.Agen;
 import LinovSupport.Ticketing.model.Gambar;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.User;
@@ -66,6 +67,7 @@ public class AccountV2Controller {
 			AccountV2 newAccount = new AccountV2();
 			for (AccountV2 acc : account) {
 				List<PicV2> Pics = new ArrayList<PicV2>();
+//				acc.setGambar(gambarService.findById(acc.getIdGambar()));
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
 					Pics.add(pic);
@@ -83,7 +85,16 @@ public class AccountV2Controller {
 		AccountV2 account = accountV2Service.findById(idAccount);
 		AccountV2 acc1 = new AccountV2();
 		acc1.setIdAccount(account.getIdAccount());
-		account.setAgen(agenService.findByAccount(acc1));
+		Agen newAgent = agenService.findByAccount(account);
+		System.out.println(newAgent.getIdAgen());
+		
+		newAgent.setAccount(null);
+		if (newAgent.getIdAgen() == null) {
+			account.setAgen(null);
+		}else {
+			account.setAgen(newAgent);
+		}
+		
 		account.setGambar(gambarService.findById(account.getIdGambar()));
 		AccountV2 acc = new AccountV2();
 		acc.setIdAccount(account.getIdAccount());
@@ -93,8 +104,6 @@ public class AccountV2Controller {
 			pics.add(picss);
 		}
 		account.setPics(pics);
-		account.getAgen().setAccount(null);
-		
 		return ResponseEntity.ok(account);
 	}
 
