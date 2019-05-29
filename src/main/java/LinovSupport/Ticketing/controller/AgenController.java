@@ -3,6 +3,8 @@
  */
 package LinovSupport.Ticketing.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -107,11 +109,28 @@ public class AgenController {
 	}
 	@GetMapping("id/{id}")
 	public ResponseEntity<?> findById(@PathVariable String id){
-		return ResponseEntity.ok(agenService.findById(id));
+		Agen agen = agenService.findById(id);
+		AccountV2 account = new AccountV2();
+		account.setIdAccount(agen.getAccount().getIdAccount());
+		account.setNama(agen.getAccount().getNama());
+		agen.setAccount(account);
+		return ResponseEntity.ok(agen);
 	}
 	@GetMapping("")
 	public ResponseEntity<?> findAll(){
-		return ResponseEntity.ok(agenService.findAll());
+		try {
+			List<Agen> agens = agenService.findAll();
+			
+			for(Agen agen : agens) {
+				AccountV2 acc = new AccountV2();
+				String idacc = agen.getAccount().getIdAccount();
+				acc.setIdAccount(idacc);
+				agen.setAccount(acc);
+			}
+			return new ResponseEntity<>(agens,HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 	@GetMapping("/acc")
 	public ResponseEntity<?> findByAccount(){

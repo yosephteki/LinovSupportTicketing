@@ -13,7 +13,7 @@
 	<groupId>LinovSupport</groupId>
 	<artifactId>Ticketing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>LinovSupportTicketing</name>
+	<name>LinovSupportTicketing</name>	
 
 	<properties>
 		<java.version>1.8</java.version>

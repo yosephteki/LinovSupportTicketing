@@ -64,17 +64,26 @@ public class AccountV2Controller {
 	public ResponseEntity<?> findAll() {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
-			AccountV2 newAccount = new AccountV2();
+			
 			for (AccountV2 acc : account) {
-				acc.getAgen().setAccount(null);
+				AccountV2 newAccount = new AccountV2();
 				List<PicV2> Pics = new ArrayList<PicV2>();
-//				acc.setGambar(gambarService.findById(acc.getIdGambar()));
+//				newAccount = acc;
+//				Agen newAgent = agenService.findByAccount(null);
+//				newAgent.setAccount(null);
+//				if (newAgent.getIdAgen() == null) {
+//					acc.setAgen(null);
+//					
+//				}else {
+//					acc.setAgen(newAgent);
+//				}
+//				
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
 					Pics.add(pic);
 				}
 				acc.setPics(Pics);
-//				acc.setGambar(gambarService.findById(acc.getIdGambar()));
+//	
 			}
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
