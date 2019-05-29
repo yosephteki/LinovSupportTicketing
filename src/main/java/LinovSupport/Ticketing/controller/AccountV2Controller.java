@@ -64,28 +64,16 @@ public class AccountV2Controller {
 	public ResponseEntity<?> findAll() {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
-			
+			AccountV2 newAccount = new AccountV2();
 			for (AccountV2 acc : account) {
-				AccountV2 newAccount = new AccountV2();
 				List<PicV2> Pics = new ArrayList<PicV2>();
-//				newAccount = acc;
-//				newAccount.setIdAccount(acc.getIdAccount());
-//				Agen newAgent = agenService.findByAccount(newAccount);
-//				newAgent.setAccount(newAccount);
-//				if (newAgent.getIdAgen() == null) {
-//					acc.setAgen(null);
-//					
-//				}else {
-//					acc.setAgen(newAgent);
-//				}
-				
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
 					Pics.add(pic);
 				}
 				acc.setPics(Pics);
-//	
 			}
+
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -95,18 +83,16 @@ public class AccountV2Controller {
 	public ResponseEntity<?> findAllv2() {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
+			AccountV2 newAccount = new AccountV2();
 			for (AccountV2 acc : account) {
-				
-//				acc.setGambar(gambarService.findById(acc.getIdGambar()));
-				AccountV2 newAccount = new AccountV2();
-				acc.getAgen().setAccount(newAccount);
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
 					Pics.add(pic);
 				}
+				acc.setPics(Pics);
 			}
-			
+
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -118,10 +104,10 @@ public class AccountV2Controller {
 		AccountV2 account = accountV2Service.findById(idAccount);
 		AccountV2 acc1 = new AccountV2();
 		acc1.setIdAccount(account.getIdAccount());
+		acc1.setAgen(null);
 		Agen newAgent = agenService.findByAccount(account);
-		System.out.println(newAgent.getIdAgen());
 		
-		newAgent.setAccount(null);
+		newAgent.setAccount(acc1);
 		if (newAgent.getIdAgen() == null) {
 			account.setAgen(null);
 		}else {
