@@ -66,6 +66,7 @@ public class AccountV2Controller {
 			List<AccountV2> account = accountV2Service.findAll();
 			AccountV2 newAccount = new AccountV2();
 			for (AccountV2 acc : account) {
+				acc.getAgen().setAccount(null);
 				List<PicV2> Pics = new ArrayList<PicV2>();
 //				acc.setGambar(gambarService.findById(acc.getIdGambar()));
 				for (PicV2 pic : acc.getPics()) {
