@@ -72,7 +72,7 @@ public class AccountV2Controller {
 //				Agen newAgent = agenService.findByAccount(null);
 //				newAgent.setAccount(null);
 //				if (newAgent.getIdAgen() == null) {
-//					acc.setAgen(null);
+//					acc.setAgen(	null);
 //					
 //				}else {
 //					acc.setAgen(newAgent);
@@ -85,6 +85,28 @@ public class AccountV2Controller {
 				acc.setPics(Pics);
 //	
 			}
+			return new ResponseEntity<>(account, HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	@GetMapping("/all")
+	public ResponseEntity<?> findAllv2() {
+		try {
+			List<AccountV2> account = accountV2Service.findAll();
+			
+			for (AccountV2 acc : account) {
+				AccountV2 newAccount = new AccountV2();
+				List<PicV2> Pics = new ArrayList<PicV2>();
+				for (PicV2 pic : acc.getPics()) {
+					pic.setAccount(newAccount);
+					Pics.add(pic);
+				}
+				Gambar gambar = gambarService.findById(acc.getIdGambar());
+				acc.setPics(Pics);
+				acc.setGambar(gambar);
+			}
+			
 			return new ResponseEntity<>(account, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
