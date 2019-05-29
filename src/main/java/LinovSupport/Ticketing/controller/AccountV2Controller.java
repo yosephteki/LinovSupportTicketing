@@ -69,15 +69,16 @@ public class AccountV2Controller {
 				AccountV2 newAccount = new AccountV2();
 				List<PicV2> Pics = new ArrayList<PicV2>();
 //				newAccount = acc;
-//				Agen newAgent = agenService.findByAccount(null);
-//				newAgent.setAccount(null);
+//				newAccount.setIdAccount(acc.getIdAccount());
+//				Agen newAgent = agenService.findByAccount(newAccount);
+//				newAgent.setAccount(newAccount);
 //				if (newAgent.getIdAgen() == null) {
-//					acc.setAgen(	null);
+//					acc.setAgen(null);
 //					
 //				}else {
 //					acc.setAgen(newAgent);
 //				}
-//				
+				
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
 					Pics.add(pic);
@@ -94,17 +95,16 @@ public class AccountV2Controller {
 	public ResponseEntity<?> findAllv2() {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
-			
 			for (AccountV2 acc : account) {
+				
+//				acc.setGambar(gambarService.findById(acc.getIdGambar()));
 				AccountV2 newAccount = new AccountV2();
+				acc.getAgen().setAccount(newAccount);
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
 					Pics.add(pic);
 				}
-				Gambar gambar = gambarService.findById(acc.getIdGambar());
-				acc.setPics(Pics);
-				acc.setGambar(gambar);
 			}
 			
 			return new ResponseEntity<>(account, HttpStatus.OK);
