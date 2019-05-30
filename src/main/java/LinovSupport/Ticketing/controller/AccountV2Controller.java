@@ -83,8 +83,11 @@ public class AccountV2Controller {
 	public ResponseEntity<?> findAllv2() {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
-			AccountV2 newAccount = new AccountV2();
+			
 			for (AccountV2 acc : account) {
+				AccountV2 newAccount = new AccountV2();
+				newAccount.setIdAccount(acc.getIdAccount());
+				acc.getAgen().setAccount(newAccount);
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
