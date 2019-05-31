@@ -66,6 +66,7 @@ public class AccountV2Controller {
 			List<AccountV2> account = accountV2Service.findAll();
 			AccountV2 newAccount = new AccountV2();
 			for (AccountV2 acc : account) {
+				
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
@@ -82,21 +83,30 @@ public class AccountV2Controller {
 	@GetMapping("/all")
 	public ResponseEntity<?> findAllv2() {
 		try {
-			List<AccountV2> account = accountV2Service.findAll();
-			
-			for (AccountV2 acc : account) {
-				AccountV2 newAccount = new AccountV2();
-				newAccount.setIdAccount(acc.getIdAccount());
-				acc.getAgen().setAccount(newAccount);
-				List<PicV2> Pics = new ArrayList<PicV2>();
-				for (PicV2 pic : acc.getPics()) {
-					pic.setAccount(newAccount);
-					Pics.add(pic);
+			List<AccountV2> accounts = accountV2Service.findAll();
+			for(AccountV2 account : accounts) {
+				AccountV2 acc1 = new AccountV2();
+				acc1.setIdAccount(account.getIdAccount());
+				acc1.setAgen(null);
+				Agen newAgent = agenService.findByAccount(account);
+				newAgent.setAccount(acc1);
+				if (newAgent.getIdAgen() == null) {
+					account.setAgen(null);
+				}else {
+					account.setAgen(newAgent);
 				}
-				acc.setPics(Pics);
+				
+				account.setGambar(gambarService.findById(account.getIdGambar()));
+				AccountV2 acc = new AccountV2();
+				acc.setIdAccount(account.getIdAccount());
+				List<PicV2> pics = new ArrayList<PicV2>();
+				for(PicV2 picss : account.getPics()) {
+					picss.setAccount(acc);
+					pics.add(picss);
+				}
+				account.setPics(pics);
 			}
-
-			return new ResponseEntity<>(account, HttpStatus.OK);
+			return new ResponseEntity<>(accounts, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
