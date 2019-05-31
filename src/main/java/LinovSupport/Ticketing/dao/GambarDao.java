@@ -51,6 +51,7 @@ public void create(Gambar gambar) {
 public void update(Gambar gambar) {
 	super.entityManager.merge(gambar);
 }
+@Transactional
 public void delete(String id) {
 	Gambar gambar = findById(id);
 	super.entityManager.remove(gambar);

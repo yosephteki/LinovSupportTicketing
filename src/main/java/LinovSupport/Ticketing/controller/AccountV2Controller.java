@@ -32,6 +32,7 @@ import LinovSupport.Ticketing.service.AccountV2Service;
 import LinovSupport.Ticketing.service.AgenService;
 import LinovSupport.Ticketing.service.GambarService;
 import LinovSupport.Ticketing.service.PicV2Service;
+import LinovSupport.Ticketing.service.RoleService;
 import LinovSupport.Ticketing.service.UserService;
 
 /**
@@ -58,8 +59,13 @@ public class AccountV2Controller {
 	@Autowired
 	private GambarService gambarService;
 	
+	@Autowired
+	private RoleService roleService;
+	
 	BCrypt bc;
 
+	int i = 1;
+	
 	@GetMapping("")
 	public ResponseEntity<?> findAll() {
 		try {
@@ -95,7 +101,6 @@ public class AccountV2Controller {
 				}else {
 					account.setAgen(newAgent);
 				}
-				
 				account.setGambar(gambarService.findById(account.getIdGambar()));
 				AccountV2 acc = new AccountV2();
 				acc.setIdAccount(account.getIdAccount());
@@ -165,58 +170,58 @@ public class AccountV2Controller {
 		}
 		return new ResponseEntity<>(account,HttpStatus.OK);
 	}
-	@PostMapping("")
-	private ResponseEntity<?> insertAccount(@RequestBody AccountV2 accountV2) throws ErrorException {
-		String msg;
-		try {
-			accountV2Service.insertAccount(accountV2);
-			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
-
-			for (PicV2 pic : accountV2.getPics()) {
-				pic.setAccount(idAccount);	
-				picV2Service.insertPic(pic);
-				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
-				
-				RandomString randomString = new RandomString();
-				String pass = randomString.getPass();
-				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
-				User user = new User();
-				user.setUsername(pic.getEmail());
-				user.setPassword(encrypt);
-				user.setIdRole("b48efe72-8058-11e9-9894-78843c9a95db");
-				user.setDetailRole(idPic);
-				userService.insertUser(user);
-				
-			}
-			msg = "Data berhasil di tambah";
-			return ResponseEntity.ok(msg);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
-	}
-	@PostMapping("/param")
-	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,@RequestParam("nama")String nama,
-			@RequestParam("telepon")String telepon,@RequestParam("alamat")String alamat,@RequestParam("gambar")MultipartFile gambar,
-			@RequestParam("active")boolean active){
-		String msg;
-		try {
-			AccountV2 account = new AccountV2();
-			account.setIdAccount(idaccount);
-			account.setNama(nama);
-			account.setTelepon(telepon);
-			account.setAlamat(alamat);
-			account.setActive(active);
-			accountV2Service.insertAccount(account);
-			
-			Gambar fileGambar = new Gambar();
-			fileGambar.setGambar(gambar.getBytes());
-			gambarService.create(fileGambar);
-			msg = "success";
-			return ResponseEntity.ok(msg);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		} 
-	}
+//	@PostMapping("")
+//	private ResponseEntity<?> insertAccount(@RequestBody AccountV2 accountV2) throws ErrorException {
+//		String msg;
+//		try {
+//			accountV2Service.insertAccount(accountV2);
+//			AccountV2 idAccount = accountV2Service.findByBk(accountV2.getNama());
+//
+//			for (PicV2 pic : accountV2.getPics()) {
+//				pic.setAccount(idAccount);	
+//				picV2Service.insertPic(pic);
+//				String idPic = picV2Service.findByBk(idAccount, pic.getEmail()).getIdPic();
+//				
+//				RandomString randomString = new RandomString();
+//				String pass = randomString.getPass();
+//				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
+//				User user = new User();
+//				user.setUsername(pic.getEmail());
+//				user.setPassword(encrypt);
+//				user.setIdRole("b48efe72-8058-11e9-9894-78843c9a95db");
+//				user.setDetailRole(idPic);
+//				userService.insertUser(user);
+//				
+//			}
+//			msg = "Data berhasil di tambah";
+//			return ResponseEntity.ok(msg);
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//		}
+//	}
+//	@PostMapping("/param")
+//	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,@RequestParam("nama")String nama,
+//			@RequestParam("telepon")String telepon,@RequestParam("alamat")String alamat,@RequestParam("gambar")MultipartFile gambar,
+//			@RequestParam("active")boolean active){
+//		String msg;
+//		try {
+//			AccountV2 account = new AccountV2();
+//			account.setIdAccount(idaccount);
+//			account.setNama(nama);
+//			account.setTelepon(telepon);
+//			account.setAlamat(alamat);
+//			account.setActive(active);
+//			accountV2Service.insertAccount(account);
+//			
+//			Gambar fileGambar = new Gambar();
+//			fileGambar.setGambar(gambar.getBytes());
+//			gambarService.create(fileGambar);
+//			msg = "success";
+//			return ResponseEntity.ok(msg);
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//		} 
+//	}
 
 	@PostMapping("/params")
 	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,@RequestParam("gambar")MultipartFile inputGambar){
@@ -245,8 +250,19 @@ public class AccountV2Controller {
 			AccountV2 newAccount = accountV2Service.findByBk(accountV2.getNama());
 			for(PicV2 pic : account.getPics()) {
 				pic.setAccount(newAccount);
-				
 				picV2Service.insertPic(pic);
+				String idPic = picV2Service.findByBk(accountV2, pic.getEmail()).getIdPic();
+				
+				RandomString randomString = new RandomString();
+				String pass = randomString.getPass();
+				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
+				User user = new User();
+				user.setUsername(pic.getEmail());
+				user.setPassword(encrypt);
+				user.setIdRole(roleService.findByBk("003").getIdRole());
+				user.setDetailRole(idPic);
+				userService.insertUser(user);
+				
 			}
 			
 			msg="Data Account berhasil ditambahkan";
@@ -272,9 +288,66 @@ public class AccountV2Controller {
 	public ResponseEntity<?> deleteAccount(@PathVariable String id) {
 		String msg;
 		try {
+			accountV2Service.findById(id).setAgen(null);
 			accountV2Service.deleteAccount(id);
 			msg = "data berhasil dihapus";
 			return ResponseEntity.ok(msg);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	@DeleteMapping("/del/{id}")
+	public ResponseEntity<?> deleteAccountV2(@PathVariable String id){
+		try {
+			String msg;
+			AccountV2 account = accountV2Service.findById(id);
+			for(PicV2 pic : account.getPics()) {
+				if (pic.getIdPic() != null) {
+					picV2Service.deletePic(pic.getIdPic());
+				}
+			}
+			Agen agen = agenService.findByAccount(account);
+			if (agen.getIdAgen() != null) {
+				agenService.delete(agen.getIdAgen());
+			}
+			account.setAgen(null);
+			accountV2Service.findById(id).setAgen(null);
+			accountV2Service.deleteAccount(id);
+			msg="Data berhasil dihapus";
+			
+			return ResponseEntity.ok(msg);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	@DeleteMapping("/delv3/{id}")
+	public ResponseEntity<?> deleteAccountV3(@PathVariable String id){
+		try {
+			String msg;
+			AccountV2 account = accountV2Service.findById(id);
+			for(PicV2 pic : account.getPics()) {
+				if (pic.getIdPic() != null) {
+					picV2Service.deletePic(pic.getIdPic());
+				}
+			}
+			Agen agen = agenService.findByAccount(account);
+			if (agen.getIdAgen() != null) {
+				agenService.delete(agen.getIdAgen());
+			}
+			account.setAgen(null);
+			accountV2Service.findById(id).setAgen(null);
+			accountV2Service.deleteAccount(id);
+			msg="Data berhasil dihapus";
+			
+			if (i <= 1) {
+				i=i+1;
+				return deleteAccountV2(id);
+			}
+			else
+				{i=1;
+				return ResponseEntity.ok(msg);
+				}
+			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
