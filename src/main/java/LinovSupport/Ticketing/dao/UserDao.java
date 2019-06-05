@@ -95,6 +95,16 @@ public class UserDao extends CommonDao{
 		return list;
 	}
 	
+	@Transactional
+	public User Login(String username,String password) {
+		User user  = (User) super.entityManager
+				.createQuery("FROM User WHERE username =:username AND password =: password")
+				.setParameter("username", username)
+				.setParameter("password", password)
+				.getResultList();
+		return user;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<User> findByFilter(String username) {

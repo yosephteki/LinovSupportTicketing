@@ -59,6 +59,10 @@ public class UserService {
 		return userDao.findByFilter(username);
 	}
 	
+	public User Login(String username,String password) {
+		return userDao.Login(username, password);
+	}
+	
 	
 	
 
