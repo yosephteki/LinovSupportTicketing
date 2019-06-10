@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import LinovSupport.Ticketing.enumeration.Level;
 import LinovSupport.Ticketing.model.DetailTiket;
+import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.Tiket;
 
 /**
@@ -38,14 +39,14 @@ public class TiketDao extends CommonDao {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Tiket findByBk(String judul, String pic) {
+	public Tiket findByBk(String judul, PicV2 pic) {
 		List<Tiket> list = super.entityManager
-				.createQuery("FROM Tiket WHERE judul=:judul AND idPic=:pic")
+				.createQuery("FROM Tiket WHERE judulTiket=:judul AND idPic=:pic")
 				.setParameter("judul", judul)
 				.setParameter("pic", pic)
 				.getResultList();
 		if (list.size() > 0) {
-			return (Tiket) list.get(0);
+			return (Tiket)list.get(0);
 		} else {
 			return new Tiket();
 		}
@@ -60,7 +61,7 @@ public class TiketDao extends CommonDao {
 		}
 	}
 	@Transactional
-	public boolean isBkExist(String judul,String pic) {
+	public boolean isBkExist(String judul,PicV2 pic) {
 		if (!findByBk(judul, pic).getIdTiket().isEmpty()) {
 			return true;
 		}else {

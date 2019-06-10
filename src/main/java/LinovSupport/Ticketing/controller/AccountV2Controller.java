@@ -199,29 +199,29 @@ public class AccountV2Controller {
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 //		}
 //	}
-//	@PostMapping("/param")
-//	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,@RequestParam("nama")String nama,
-//			@RequestParam("telepon")String telepon,@RequestParam("alamat")String alamat,@RequestParam("gambar")MultipartFile gambar,
-//			@RequestParam("active")boolean active){
-//		String msg;
-//		try {
-//			AccountV2 account = new AccountV2();
-//			account.setIdAccount(idaccount);
-//			account.setNama(nama);
-//			account.setTelepon(telepon);
-//			account.setAlamat(alamat);
-//			account.setActive(active);
-//			accountV2Service.insertAccount(account);
-//			
-//			Gambar fileGambar = new Gambar();
-//			fileGambar.setGambar(gambar.getBytes());
-//			gambarService.create(fileGambar);
-//			msg = "success";
-//			return ResponseEntity.ok(msg);
-//		} catch (Exception e) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-//		} 
-//	}
+	@PostMapping("/param")
+	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,@RequestParam("nama")String nama,
+			@RequestParam("telepon")String telepon,@RequestParam("alamat")String alamat,@RequestParam("gambar")MultipartFile gambar,
+			@RequestParam("active")boolean active){
+		String msg;
+		try {
+			AccountV2 account = new AccountV2();
+			account.setIdAccount(idaccount);
+			account.setNama(nama);
+			account.setTelepon(telepon);
+			account.setAlamat(alamat);
+			account.setActive(active);
+			accountV2Service.insertAccount(account);
+			
+			Gambar fileGambar = new Gambar();
+			fileGambar.setGambar(gambar.getBytes());
+			gambarService.create(fileGambar);
+			msg = "success";
+			return ResponseEntity.ok(msg);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} 
+	}
 
 	@PostMapping("/params")
 	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,@RequestParam("gambar")MultipartFile inputGambar){

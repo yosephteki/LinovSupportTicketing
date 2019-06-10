@@ -13,6 +13,7 @@ import LinovSupport.Ticketing.dao.TiketDao;
 import LinovSupport.Ticketing.enumeration.Level;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.DetailTiket;
+import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.Tiket;
 
 /**
@@ -28,7 +29,7 @@ public class TiketService {
 	public Tiket findById(String id) {
 		return tiketDao.findById(id);
 	}
-	public Tiket findByBk(String judul, String pic) {
+	public Tiket findByBk(String judul, PicV2 pic) {
 		return tiketDao.findByBk(judul, pic);
 	}
 

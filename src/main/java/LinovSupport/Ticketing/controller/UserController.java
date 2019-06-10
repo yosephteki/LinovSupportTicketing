@@ -49,6 +49,7 @@ public class UserController {
 	@GetMapping("/{username}/{password}")
 	public ResponseEntity<?> login(@PathVariable String username,@PathVariable String password){
 		try {
+			
 			User user = userService.Login(username, password);
 			return ResponseEntity.ok(user);
 		} catch (Exception e) {

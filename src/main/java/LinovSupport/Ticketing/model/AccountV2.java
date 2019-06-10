@@ -127,9 +127,5 @@ public class AccountV2 {
 	public void setPics(List<PicV2> pics) {
 		this.pics = pics;
 	}
-
-	
-
-	
 	
 }

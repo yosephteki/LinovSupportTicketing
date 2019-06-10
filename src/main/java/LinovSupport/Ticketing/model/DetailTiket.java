@@ -2,6 +2,7 @@
  * 
  */
 package LinovSupport.Ticketing.model;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ public class DetailTiket {
 	private Tiket idTiket;
 	
 	@Column(name="jam")
-	private Date waktu;
+	private LocalDateTime waktu;
 	
 	@Column(name="id_pengirim")
 	private String pengirim;
@@ -65,11 +66,13 @@ public class DetailTiket {
 		this.idTiket = idTiket;
 	}
 
-	public Date getWaktu() {
+	
+
+	public LocalDateTime getWaktu() {
 		return waktu;
 	}
 
-	public void setWaktu(Date waktu) {
+	public void setWaktu(LocalDateTime waktu) {
 		this.waktu = waktu;
 	}
 
