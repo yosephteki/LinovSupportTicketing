@@ -50,30 +50,30 @@ public class AccountV2Controller {
 
 	@Autowired
 	private PicV2Service picV2Service;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private AgenService agenService;
-	
+
 	@Autowired
 	private GambarService gambarService;
-	
+
 	@Autowired
 	private RoleService roleService;
-	
+
 	BCrypt bc;
 
 	int i = 1;
-	
+
 	@GetMapping("")
 	public ResponseEntity<?> findAll() {
 		try {
 			List<AccountV2> account = accountV2Service.findAll();
 			AccountV2 newAccount = new AccountV2();
 			for (AccountV2 acc : account) {
-				
+
 				List<PicV2> Pics = new ArrayList<PicV2>();
 				for (PicV2 pic : acc.getPics()) {
 					pic.setAccount(newAccount);
@@ -87,11 +87,12 @@ public class AccountV2Controller {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+
 	@GetMapping("/all")
 	public ResponseEntity<?> findAllv2() {
 		try {
 			List<AccountV2> accounts = accountV2Service.findAll();
-			for(AccountV2 account : accounts) {
+			for (AccountV2 account : accounts) {
 				AccountV2 acc1 = new AccountV2();
 				acc1.setIdAccount(account.getIdAccount());
 				acc1.setAgen(null);
@@ -99,14 +100,14 @@ public class AccountV2Controller {
 				newAgent.setAccount(acc1);
 				if (newAgent.getIdAgen() == null) {
 					account.setAgen(null);
-				}else {
+				} else {
 					account.setAgen(newAgent);
 				}
 				account.setGambar(gambarService.findById(account.getIdGambar()));
 				AccountV2 acc = new AccountV2();
 				acc.setIdAccount(account.getIdAccount());
 				List<PicV2> pics = new ArrayList<PicV2>();
-				for(PicV2 picss : account.getPics()) {
+				for (PicV2 picss : account.getPics()) {
 					picss.setAccount(acc);
 					pics.add(picss);
 				}
@@ -125,14 +126,14 @@ public class AccountV2Controller {
 		acc1.setIdAccount(account.getIdAccount());
 		acc1.setAgen(null);
 		Agen newAgent = agenService.findByAccount(account);
-		
+
 		newAgent.setAccount(acc1);
 		if (newAgent.getIdAgen() == null) {
 			account.setAgen(null);
-		}else {
+		} else {
 			account.setAgen(newAgent);
 		}
-		
+
 		account.setGambar(gambarService.findById(account.getIdGambar()));
 		AccountV2 acc = new AccountV2();
 		acc.setIdAccount(account.getIdAccount());
@@ -147,7 +148,7 @@ public class AccountV2Controller {
 
 	@GetMapping("/nama/{nama}")
 	public ResponseEntity<?> findByBk(@PathVariable String nama) {
-		AccountV2 account  = accountV2Service.findByBk(nama);
+		AccountV2 account = accountV2Service.findByBk(nama);
 		AccountV2 acc = new AccountV2();
 		acc.setIdAccount(account.getIdAccount());
 		List<PicV2> pics = new ArrayList<PicV2>();
@@ -157,20 +158,21 @@ public class AccountV2Controller {
 		}
 		account.setPics(pics);
 		return ResponseEntity.ok(account);
-	}	
-	
+	}
+
 	@GetMapping("/{nama}/{telepon}/{alamat}")
 	public ResponseEntity<?> findByFilter(@PathVariable String nama, @PathVariable String telepon,
 			@PathVariable String alamat) {
 		List<AccountV2> account = accountV2Service.findByFilter(nama, telepon, alamat);
-		
-		for(AccountV2 acc :  account) {
-			for(PicV2 pic : acc.getPics()) {
+
+		for (AccountV2 acc : account) {
+			for (PicV2 pic : acc.getPics()) {
 				pic.setAccount(null);
 			}
 		}
-		return new ResponseEntity<>(account,HttpStatus.OK);
+		return new ResponseEntity<>(account, HttpStatus.OK);
 	}
+
 //	@PostMapping("")
 //	private ResponseEntity<?> insertAccount(@RequestBody AccountV2 accountV2) throws ErrorException {
 //		String msg;
@@ -201,9 +203,10 @@ public class AccountV2Controller {
 //		}
 //	}
 	@PostMapping("/param")
-	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,@RequestParam("nama")String nama,
-			@RequestParam("telepon")String telepon,@RequestParam("alamat")String alamat,@RequestParam("gambar")MultipartFile gambar,
-			@RequestParam("active")boolean active){
+	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,
+			@RequestParam("nama") String nama, @RequestParam("telepon") String telepon,
+			@RequestParam("alamat") String alamat, @RequestParam("gambar") MultipartFile gambar,
+			@RequestParam("active") boolean active) {
 		String msg;
 		try {
 			AccountV2 account = new AccountV2();
@@ -213,7 +216,7 @@ public class AccountV2Controller {
 			account.setAlamat(alamat);
 			account.setActive(active);
 			accountV2Service.insertAccount(account);
-			
+
 			Gambar fileGambar = new Gambar();
 			fileGambar.setGambar(gambar.getBytes());
 			gambarService.create(fileGambar);
@@ -221,24 +224,24 @@ public class AccountV2Controller {
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		} 
+		}
 	}
 
 	@PostMapping("/params")
-	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,@RequestParam("gambar")MultipartFile inputGambar){
+	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,
+			@RequestParam("gambar") MultipartFile inputGambar) {
 		String msg;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			AccountV2 account = mapper.readValue(inputAccount,AccountV2.class);
-			
+			AccountV2 account = mapper.readValue(inputAccount, AccountV2.class);
+
 			AccountV2 accountV2 = new AccountV2();
 			accountV2.setIdAccount(account.getIdAccount());
 			accountV2.setNama(account.getNama());
 			accountV2.setTelepon(account.getTelepon());
 			accountV2.setAlamat(account.getAlamat());
 			accountV2.setActive(account.isActive());
-			
-			
+
 			Gambar gambar = new Gambar();
 			int kodeGambar = accountV2.getNama().hashCode();
 			gambar.setKodeGambar(kodeGambar);
@@ -246,29 +249,30 @@ public class AccountV2Controller {
 			gambarService.create(gambar);
 			String idGambar = gambarService.findByBk(kodeGambar).getIdGambar();
 			accountV2.setIdGambar(idGambar);
-			
+
 			accountV2Service.insertAccount(accountV2);
 			AccountV2 newAccount = accountV2Service.findByBk(accountV2.getNama());
-			for(PicV2 pic : account.getPics()) {
+
+			for (PicV2 pic : account.getPics()) {
 				pic.setAccount(newAccount);
 				picV2Service.insertPic(pic);
-				PicV2 newPic = new PicV2();
-				newPic = picV2Service.findByBk(accountV2,pic.getEmail());
-				newPic.setAccount(null);
+				PicV2 newPic = picV2Service.findByBk(accountV2, pic.getEmail());
+
 				RandomString randomString = new RandomString();
 				String pass = randomString.getPass();
 				System.out.println(pass);
-				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
+				String encrypt = BCrypt.hashpw(pass, bc.gensalt());
+
 				User user = new User();
 				user.setUsername(pic.getEmail());
 				user.setPassword(encrypt);
 				user.setIdRole(roleService.findByBk("003").getIdRole());
 				user.setDetailRole(newPic.getIdPic());
 				userService.insertUser(user);
-				
+
 			}
-			
-			msg="Data Account berhasil ditambahkan";
+
+			msg = "Data Account berhasil ditambahkan";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -299,12 +303,13 @@ public class AccountV2Controller {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+
 	@DeleteMapping("/del/{id}")
-	public ResponseEntity<?> deleteAccountV2(@PathVariable String id){
+	public ResponseEntity<?> deleteAccountV2(@PathVariable String id) {
 		try {
 			String msg;
 			AccountV2 account = accountV2Service.findById(id);
-			for(PicV2 pic : account.getPics()) {
+			for (PicV2 pic : account.getPics()) {
 				if (pic.getIdPic() != null) {
 					picV2Service.deletePic(pic.getIdPic());
 				}
@@ -316,19 +321,20 @@ public class AccountV2Controller {
 			account.setAgen(null);
 			accountV2Service.findById(id).setAgen(null);
 			accountV2Service.deleteAccount(id);
-			msg="Data berhasil dihapus";
-			
+			msg = "Data berhasil dihapus";
+
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
+
 	@DeleteMapping("/delv3/{id}")
-	public ResponseEntity<?> deleteAccountV3(@PathVariable String id){
+	public ResponseEntity<?> deleteAccountV3(@PathVariable String id) {
 		try {
 			String msg;
 			AccountV2 account = accountV2Service.findById(id);
-			for(PicV2 pic : account.getPics()) {
+			for (PicV2 pic : account.getPics()) {
 				if (pic.getIdPic() != null) {
 					picV2Service.deletePic(pic.getIdPic());
 				}
@@ -340,24 +346,23 @@ public class AccountV2Controller {
 			account.setAgen(null);
 			accountV2Service.findById(id).setAgen(null);
 			accountV2Service.deleteAccount(id);
-			msg="Data berhasil dihapus";
-			
+			msg = "Data berhasil dihapus";
+
 			if (i <= 1) {
-				i=i+1;
+				i = i + 1;
 				return deleteAccountV2(id);
-			}
-			else
-				{i=1;
+			} else {
+				i = 1;
 				return ResponseEntity.ok(msg);
-				}
-			
+			}
+
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	
+
 	@PatchMapping("/{id}/{status}")
-	public ResponseEntity<?> patchActive(@PathVariable String id,@PathVariable boolean status) throws ErrorException{
+	public ResponseEntity<?> patchActive(@PathVariable String id, @PathVariable boolean status) throws ErrorException {
 		try {
 			String msg;
 			AccountV2 account = accountV2Service.findById(id);

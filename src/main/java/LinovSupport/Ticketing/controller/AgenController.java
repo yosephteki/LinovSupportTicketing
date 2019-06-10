@@ -105,7 +105,19 @@ public class AgenController {
 
 	@GetMapping("/{email}/{nama}")
 	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable String nama){
-		return ResponseEntity.ok(agenService.findByFilter(email, nama));
+		try {
+		List<Agen> agens = agenService.findByFilter(email, nama);
+		
+		for(Agen agen : agens) {
+			AccountV2 acc = new AccountV2();
+			String idacc = agen.getAccount().getIdAccount();
+			acc.setIdAccount(idacc);
+			agen.setAccount(acc);
+		}
+		return new ResponseEntity<>(agens,HttpStatus.OK);
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 	@GetMapping("id/{id}")
 	public ResponseEntity<?> findById(@PathVariable String id){
@@ -132,11 +144,11 @@ public class AgenController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
-	@GetMapping("/acc")
-	public ResponseEntity<?> findByAccount(){
-		AccountV2 acc = new AccountV2();
-		acc.setIdAccount("6db55088-c27b-4777-bb20-b44cde31adf2");
-		return ResponseEntity.ok(agenService.findByAccount(acc));
-	}
+//	@GetMapping("/acc")
+//	public ResponseEntity<?> findByAccount(){
+//		AccountV2 acc = new AccountV2();
+//		acc.setIdAccount("6db55088-c27b-4777-bb20-b44cde31adf2");
+//		return ResponseEntity.ok(agenService.findByAccount(acc));
+//	}
 	
 }
