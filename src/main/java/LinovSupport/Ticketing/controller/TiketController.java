@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import LinovSupport.Ticketing.enumeration.Level;
+import LinovSupport.Ticketing.enumeration.Status;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.DetailTiket;
@@ -138,6 +140,19 @@ public class TiketController {
 			tiketService.insertDetail(detail);
 			msg = "berhasil insert detail";
 			return ResponseEntity.ok(msg); 
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	@PatchMapping("/{id}/{status}")
+	public ResponseEntity<?> patchActive(@PathVariable String id,@PathVariable Status status){
+		try {
+			String msg;
+			Tiket tiket = tiketService.findById(id);
+			tiket.setStatus(status);
+			tiketService.updateTiket(tiket);
+			msg = "Status tiket berhasil diubah";
+			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

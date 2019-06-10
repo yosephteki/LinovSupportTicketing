@@ -105,9 +105,11 @@ public class PicV2Controller {
 	}
 	
 
-	@GetMapping("idAccount/{idAccount}/email/{email}")
-	public ResponseEntity<?> findByBk(@PathVariable String account,@PathVariable String email) {
-		return ResponseEntity.ok(findByBk(account, email));
+	@GetMapping("/email/{email}")
+	public ResponseEntity<?> findByBk(@RequestBody AccountV2 account,@PathVariable String email) {
+		PicV2 pic = picService.findByBk(account, email);
+		pic.setAccount(null);
+		return ResponseEntity.ok(pic);
 		}
 
 	@GetMapping("/{email}/{nama}")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.service.UserService;
 
@@ -23,6 +24,9 @@ import LinovSupport.Ticketing.service.UserService;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	
+	BCrypt bc = new BCrypt();
+	
 
 	@Autowired
 	private UserService userService;
@@ -49,9 +53,12 @@ public class UserController {
 	@GetMapping("/{username}/{password}")
 	public ResponseEntity<?> login(@PathVariable String username,@PathVariable String password){
 		try {
-			
-			User user = userService.Login(username, password);
-			return ResponseEntity.ok(user);
+			User user = userService.findByBk(username);
+			if(bc.checkpw(password,user.getPassword())) {
+				return ResponseEntity.ok(user);
+			}else {
+				return ResponseEntity.ok("Username dan Password tidak cocok / user tidak ada");
+			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

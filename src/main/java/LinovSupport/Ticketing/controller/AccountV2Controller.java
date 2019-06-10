@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -251,16 +252,18 @@ public class AccountV2Controller {
 			for(PicV2 pic : account.getPics()) {
 				pic.setAccount(newAccount);
 				picV2Service.insertPic(pic);
-				String idPic = picV2Service.findByBk(accountV2, pic.getEmail()).getIdPic();
-				
+				PicV2 newPic = new PicV2();
+				newPic = picV2Service.findByBk(accountV2,pic.getEmail());
+				newPic.setAccount(null);
 				RandomString randomString = new RandomString();
 				String pass = randomString.getPass();
+				System.out.println(pass);
 				String encrypt = BCrypt.hashpw(pass,bc.gensalt());
 				User user = new User();
 				user.setUsername(pic.getEmail());
 				user.setPassword(encrypt);
 				user.setIdRole(roleService.findByBk("003").getIdRole());
-				user.setDetailRole(idPic);
+				user.setDetailRole(newPic.getIdPic());
 				userService.insertUser(user);
 				
 			}
@@ -348,6 +351,21 @@ public class AccountV2Controller {
 				return ResponseEntity.ok(msg);
 				}
 			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
+	
+	@PatchMapping("/{id}/{status}")
+	public ResponseEntity<?> patchActive(@PathVariable String id,@PathVariable boolean status) throws ErrorException{
+		try {
+			String msg;
+			AccountV2 account = accountV2Service.findById(id);
+			account.setActive(status);
+//			accountV2Service.insertAccount(account);
+			accountV2Service.updateAccount(account);
+			msg = "Status aktif berhasil diubah";
+			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
