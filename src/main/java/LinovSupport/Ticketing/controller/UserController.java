@@ -103,7 +103,7 @@ public class UserController {
 					mUser.setEmail(admin.getEmail());
 					mUser.setStatus(admin.isActive());
 				}
-				
+				 
 				return ResponseEntity.ok(mUser);
 			}else {
 				return ResponseEntity.ok("Username dan Password tidak cocok / user tidak ada");

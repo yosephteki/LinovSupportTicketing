@@ -37,7 +37,7 @@ public class TiketService {
 		return tiketDao.findAll();
 	}
 
-	public List<Tiket> findByFilter(String judul, String pic, Level level) {
+	public List<Tiket> findByFilter(String judul, PicV2 pic, Level level) {
 		return tiketDao.findByFilter(judul, pic, level);
 	}
 

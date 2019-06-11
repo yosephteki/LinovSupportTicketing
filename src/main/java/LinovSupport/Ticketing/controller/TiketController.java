@@ -25,6 +25,7 @@ import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.DetailTiket;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.Tiket;
+import LinovSupport.Ticketing.service.PicV2Service;
 import LinovSupport.Ticketing.service.TiketService;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
@@ -42,18 +43,19 @@ public class TiketController {
 	@Autowired
 	private TiketService tiketService;
 	
-	Date date = new Date();
+	@Autowired
+	private PicV2Service picService;
 	
-
+	Date date = new Date();
 
 	@GetMapping("/{idTiket}")
 	public ResponseEntity<?> findById(@PathVariable String idTiket) {
 		Tiket tiket = tiketService.findById(idTiket);
-		Tiket tics = new Tiket();
-		tics.setIdTiket(tiket.getIdTiket());
-
-//	List<tiket>
-		return ResponseEntity.ok(tiketService.findById(idTiket));
+		tiket.getIdPic().setAccount(null);
+		for(DetailTiket dtl : tiket.getDetailTiket()) {
+			dtl.setIdTiket(null);
+		}
+		return ResponseEntity.ok(tiket);
 	}
 
 	@GetMapping("")
@@ -81,15 +83,36 @@ public class TiketController {
 		}
 	}
 
-	@GetMapping("/judul/{judul}/pic/{pic}/level/{level}")
+	@GetMapping("/{judul}/{pic}/{level}")
 	public ResponseEntity<?> findByFilter(@PathVariable String judul, @PathVariable String pic,
 			@PathVariable Level level) {
-		return ResponseEntity.ok(tiketService.findByFilter(judul, pic, level));
+		PicV2 pic1 = picService.findById(pic);
+		List<Tiket> tikets = tiketService.findByFilter(judul, pic1, level);
+		for(Tiket tiket : tikets) {
+			tiket.getIdPic().getAccount().setPics(null);
+			tiket.getIdPic().getAccount().setAgen(null);
+			for(DetailTiket dtl : tiket.getDetailTiket()) {
+				dtl.setIdTiket(null);
+			}
+		}
+		
+		return ResponseEntity.ok(tikets);
 	}
 
 	@GetMapping("/level/{level}")
 	public ResponseEntity<?> findByLevel(@PathVariable Level level) {
-		return ResponseEntity.ok(tiketService.findByLevel(level));
+		List<Tiket> tikets = tiketService.findByLevel(level);
+		for(Tiket tiket : tikets) {
+			tiket.getIdPic().getAccount().setPics(null);
+			tiket.getIdPic().getAccount().setAgen(null);
+			for(DetailTiket dtl : tiket.getDetailTiket()) {
+				dtl.setIdTiket(null);
+			}
+		}
+			
+		
+		
+		return ResponseEntity.ok(tikets);
 	}
 
 	@PostMapping("")

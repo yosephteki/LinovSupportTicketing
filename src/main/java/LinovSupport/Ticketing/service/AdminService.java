@@ -1,6 +1,8 @@
 package LinovSupport.Ticketing.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import LinovSupport.Ticketing.dao.AdminDao;
@@ -59,7 +61,7 @@ public class AdminService {
 			throw new ErrorException("Admin tidak di temukan");
 		}
 	}
-	public Admin findAll() {
+	public List<Admin> findAll() {
 		return adminDao.findAll();
 	}
 

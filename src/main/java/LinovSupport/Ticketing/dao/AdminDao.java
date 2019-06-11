@@ -102,10 +102,10 @@ public class AdminDao extends CommonDao {
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Admin findAll() {
+	public List<Admin> findAll() {
 		List<Admin> list = super.entityManager
 				.createQuery("FROM Admin")
 				.getResultList();
-		return (Admin) list;
+		return list;
 	}
 }
