@@ -80,12 +80,12 @@ public class TiketDao extends CommonDao {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Tiket> findByFilter(String judul, PicV2 pic, Level level) {
+	public List<Tiket> findByFilter(PicV2 pic,Level level) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("FROM Tiket WHERE 1=1");
-		if (!judul.trim().isEmpty()) {
-			hql.append(" AND judulTiket =:judul");
-		}
+//		if (!judul.trim().isEmpty()) {
+//			hql.append(" AND judulTiket =:judul");
+//		}
 		if (pic != null) {
 			hql.append(" AND idPic =:pic");
 		}
@@ -95,9 +95,9 @@ public class TiketDao extends CommonDao {
 
 		Query query = super.entityManager.createQuery(hql.toString());
 
-		if (!judul.trim().isEmpty()) {
-			query.setParameter("judul", judul);
-		}
+//		if (!judul.trim().isEmpty()) {
+//			query.setParameter("judul", judul);
+//		}
 		if (pic != null) {
 			query.setParameter("pic", pic);
 		}

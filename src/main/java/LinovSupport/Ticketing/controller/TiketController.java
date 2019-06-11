@@ -83,11 +83,15 @@ public class TiketController {
 		}
 	}
 
-	@GetMapping("/{judul}/{pic}/{level}")
-	public ResponseEntity<?> findByFilter(@PathVariable String judul, @PathVariable String pic,
-			@PathVariable Level level) {
-		PicV2 pic1 = picService.findById(pic);
-		List<Tiket> tikets = tiketService.findByFilter(judul, pic1, level);
+	@GetMapping("/filter/{pic}/{level}")
+	public ResponseEntity<?> findByFilter(@PathVariable String pic,@PathVariable Level level) {
+		PicV2 pic1 = new PicV2();
+		if (!pic.trim().isEmpty()) {
+			pic1 = picService.findById(pic);
+		}else {
+			pic1 = null;
+		}
+		List<Tiket> tikets = tiketService.findByFilter(pic1,level);
 		for(Tiket tiket : tikets) {
 			tiket.getIdPic().getAccount().setPics(null);
 			tiket.getIdPic().getAccount().setAgen(null);
@@ -95,7 +99,6 @@ public class TiketController {
 				dtl.setIdTiket(null);
 			}
 		}
-		
 		return ResponseEntity.ok(tikets);
 	}
 
