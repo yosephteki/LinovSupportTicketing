@@ -13,7 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import LinovSupport.Ticketing.encrypt.BCrypt;
+import LinovSupport.Ticketing.model.Admin;
+import LinovSupport.Ticketing.model.Agen;
+import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.User;
+import LinovSupport.Ticketing.model.masterUser;
+import LinovSupport.Ticketing.service.AdminService;
+import LinovSupport.Ticketing.service.AgenService;
+import LinovSupport.Ticketing.service.PicV2Service;
+import LinovSupport.Ticketing.service.RoleService;
 import LinovSupport.Ticketing.service.UserService;
 
 /**
@@ -27,9 +35,20 @@ public class UserController {
 	
 	BCrypt bc = new BCrypt();
 	
-
+	@Autowired
+	private PicV2Service picService;
+	
+	@Autowired
+	private AgenService agenService;
+	
+	@Autowired
+	private AdminService adminService;
+	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RoleService roleservice;
 
 	@GetMapping("")
 	public ResponseEntity<?> findAll() {
@@ -55,7 +74,37 @@ public class UserController {
 		try {
 			User user = userService.findByBk(username);
 			if(bc.checkpw(password,user.getPassword())) {
-				return ResponseEntity.ok(user);
+				masterUser mUser = new masterUser();
+				mUser.setIdUser(user.getIdUser());
+				mUser.setUsercode(user.getDetailRole());
+				mUser.setUsername(user.getUsername());
+				mUser.setPassword(user.getPassword());
+				mUser.setRole(roleservice.findById(user.getIdRole()).getNama());
+				
+				PicV2 pic = picService.findById(mUser.getUsercode());
+				Agen agen = agenService.findById(mUser.getUsercode());
+				Admin admin = adminService.findById(mUser.getUsercode());
+				
+				System.out.println(pic.getIdPic());
+				System.out.println(agen.getIdAgen());
+				System.out.println(admin.getIdAdmin());
+				if (pic.getIdPic().matches(mUser.getUsercode())) {
+					mUser.setNama(pic.getNama());
+					mUser.setEmail(pic.getEmail());
+					mUser.setStatus(pic.isActive());
+				}
+				if(agen.getIdAgen() != null && agen.getIdAgen().matches(mUser.getUsercode())) {
+					mUser.setNama(agen.getNama());
+					mUser.setEmail(agen.getEmail());
+					mUser.setStatus(agen.isActive());
+				}
+				if(admin.getIdAdmin() != null && admin.getIdAdmin().matches(mUser.getUsercode())) {
+					mUser.setNama(admin.getNama());
+					mUser.setEmail(admin.getEmail());
+					mUser.setStatus(admin.isActive());
+				}
+				
+				return ResponseEntity.ok(mUser);
 			}else {
 				return ResponseEntity.ok("Username dan Password tidak cocok / user tidak ada");
 			}

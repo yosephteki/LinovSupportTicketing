@@ -285,8 +285,6 @@ public class AccountV2Controller {
 				user.setIdRole(roleService.findByBk("003").getIdRole());
 				user.setDetailRole(newPic.getIdPic());
 				userService.insertUser(user);
-				
-
 //				Properties props = new Properties();	
 //				   props.put("mail.smtp.auth", "true");
 //				   props.put("mail.smtp.starttls.enable", "true");
