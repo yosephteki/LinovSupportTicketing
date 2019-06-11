@@ -50,7 +50,6 @@ public class PicV2Controller {
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 //		}
 //	}
-	
 	@PutMapping("")
 	public ResponseEntity<?> update(@RequestBody PicV2 pic) throws ErrorException {
 		String msg;

@@ -3,8 +3,24 @@
  */
 package LinovSupport.Ticketing.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -229,9 +245,9 @@ public class AccountV2Controller {
 
 	@PostMapping("/params")
 	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,
-			@RequestParam("gambar") MultipartFile inputGambar) {
-		String msg;
+			@RequestParam("gambar") MultipartFile inputGambar)throws AddressException, MessagingException, IOException  {
 		try {
+			String msgs;
 			ObjectMapper mapper = new ObjectMapper();
 			AccountV2 account = mapper.readValue(inputAccount, AccountV2.class);
 
@@ -256,7 +272,7 @@ public class AccountV2Controller {
 			for (PicV2 pic : account.getPics()) {
 				pic.setAccount(newAccount);
 				picV2Service.insertPic(pic);
-				PicV2 newPic = picV2Service.findByBk(accountV2, pic.getEmail());
+				PicV2 newPic = picV2Service.findByBk(newAccount, pic.getEmail());
 
 				RandomString randomString = new RandomString();
 				String pass = randomString.getPass();
@@ -269,11 +285,42 @@ public class AccountV2Controller {
 				user.setIdRole(roleService.findByBk("003").getIdRole());
 				user.setDetailRole(newPic.getIdPic());
 				userService.insertUser(user);
+				
 
+//				Properties props = new Properties();	
+//				   props.put("mail.smtp.auth", "true");
+//				   props.put("mail.smtp.starttls.enable", "true");
+//				   props.put("mail.smtp.host", "smtp.gmail.com");
+//				   props.put("mail.smtp.port", "587");
+//				   
+//				   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+//				      protected PasswordAuthentication getPasswordAuthentication() {
+//				         return new PasswordAuthentication("yoseph.3912@gmail.com", "zedoteki7777");
+//				      }
+//				   });
+//				   Message msg = new MimeMessage(session);
+//				   msg.setFrom(new InternetAddress("yosephteki@gmail.com", false));
+//				   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(pic.getEmail()));
+//				   msg.setSubject("Pendaftaran Akun Linov Ticketing");
+//				   msg.setContent("email = "+pic.getEmail()+" password = "+pass, "text/html");
+//				   msg.setSentDate(new Date());
+//
+//				   MimeBodyPart messageBodyPart = new MimeBodyPart();
+//				   messageBodyPart.setContent("email = "+pic.getEmail()+" password = "+pass, "text/html");
+//
+//				   Multipart multipart = new MimeMultipart();
+//				   multipart.addBodyPart(messageBodyPart);
+//				   MimeBodyPart attachPart = new MimeBodyPart();
+//
+////				   attachPart.attachFile("hewan.png");
+////				   multipart.addBodyPart(attachPart);
+//				   msg.setContent(multipart);
+//				   Transport.send(msg);
 			}
+			
 
-			msg = "Data Account berhasil ditambahkan";
-			return ResponseEntity.ok(msg);
+			msgs = "Data Account berhasil ditambahkan";
+			return ResponseEntity.ok(msgs);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
