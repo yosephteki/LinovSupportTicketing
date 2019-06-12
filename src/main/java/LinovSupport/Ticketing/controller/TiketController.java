@@ -124,15 +124,9 @@ public class TiketController {
 		try {
 			tiketService.insertTiket(tiket);
 			Tiket tiket2 = tiketService.findByBk(tiket.getJudulTiket(), tiket.getIdPic());
-//			System.out.println(tiket2.getIdTiket());
 			for (DetailTiket dtl : tiket.getDetailTiket()) {
-				dtl.setIdTiket(tiket2);
-//				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+				dtl.setIdTiket(tiket2);  
 				LocalDateTime now = LocalDateTime.now();  
-//				String waktu = dtf.format(now);
-//				Date date = (Date) dtf.parse(waktu);
-//				dtl.setWaktu();
-//				LocalTime time = LocalTime.now();
 				dtl.setWaktu(now);
 				tiketService.insertDetail(dtl);
 			}

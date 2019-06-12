@@ -3,7 +3,22 @@
  */
 package LinovSupport.Ticketing.controller;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,8 +59,8 @@ public class AgenController {
 	private BCrypt bc;
 
 	@PostMapping("")
-	public ResponseEntity<?> insertAgen(@RequestBody Multi agen) throws ErrorException {
-		String msg;
+	public ResponseEntity<?> insertAgen(@RequestBody Multi agen) throws ErrorException, AddressException, MessagingException, IOException {
+		String msgs;
 		try {
 			Agen agent = new Agen();
 			
@@ -73,8 +88,39 @@ public class AgenController {
 			
 			userService.insertUser(user);
 			
-			msg = "Data berhasil di tambah";
-			return ResponseEntity.ok(msg);
+//			Properties props = new Properties();
+//			props.put("mail.smtp.auth", "true");
+//			props.put("mail.smtp.starttls.enable", "true");
+//			props.put("mail.smtp.host", "smtp.gmail.com");
+//			props.put("mail.smtp.port", "587");
+//
+//			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+//				protected PasswordAuthentication getPasswordAuthentication() {
+//					return new PasswordAuthentication("yoseph.3912@gmail.com", "zedoteki7777");
+//				}
+//			});
+//			Message msg = new MimeMessage(session);
+//			msg.setFrom(new InternetAddress("yosephteki@gmail.com", false));
+//			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(newAgen.getEmail()));
+//			msg.setSubject("Pendaftaran Akun Linov Ticketing");
+//			msg.setContent("Gunakan Informasi ini untuk login : <br> email = " + newAgen.getEmail() + " password = " + pass, "text/html");
+//			msg.setSentDate(new Date());
+//
+//			MimeBodyPart messageBodyPart = new MimeBodyPart();
+//			messageBodyPart.setContent("Gunakan Informasi ini untuk login : <br> email = " + newAgen.getEmail() + " password = " + pass, "text/html");
+//
+//			Multipart multipart = new MimeMultipart();
+//			multipart.addBodyPart(messageBodyPart);
+//			MimeBodyPart attachPart = new MimeBodyPart();
+//
+////			   attachPart.attachFile("hewan.png");
+////			   multipart.addBodyPart(attachPart);
+//			msg.setContent(multipart);
+//			Transport.send(msg);
+
+			
+			msgs = "Berhasil menambahkan data Agen";
+			return ResponseEntity.ok(msgs);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

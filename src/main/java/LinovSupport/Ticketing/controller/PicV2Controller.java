@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
+import LinovSupport.Ticketing.model.Multi;
 import LinovSupport.Ticketing.model.PicV2;
+import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.service.PicV2Service;
+import LinovSupport.Ticketing.service.UserService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -25,13 +30,39 @@ public class PicV2Controller {
 	
 	@Autowired
 	private PicV2Service picService;
+	
+	@Autowired
+	private UserService userService;
+	
+	private BCrypt bc;
 
 	@PostMapping("")
-	public ResponseEntity<?> insertPic(@RequestBody PicV2 pic) throws ErrorException {
+	public ResponseEntity<?> insertPic(@RequestBody Multi pic) throws ErrorException {
 		String msg;
 		try {
-			picService.insertPic(pic);
-			msg = "success creating pic";
+			
+			PicV2 picc = new PicV2();
+			picc.setIdPic(pic.getId());
+			picc.setAccount(pic.getAccount());
+			picc.setEmail(pic.getEmail());
+			picc.setActive(pic.isActive());
+			picc.setNama(pic.getNama());
+			
+			picService.insertPic(picc);
+			
+			PicV2 newPic = new PicV2();
+			newPic = picService.findByBk(pic.getAccount(),pic.getEmail());
+			String pass = pic.getPassword();
+			String encrypt = BCrypt.hashpw(pass, bc.gensalt());
+			
+			User user = new User();
+			user.setUsername(pic.getUsername());
+			user.setPassword(encrypt);
+			user.setIdRole(pic.getRole());
+			user.setDetailRole(newPic.getIdPic());
+			userService.insertUser(user);
+			
+			msg = "Berhasil menambahkan data Pic";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
