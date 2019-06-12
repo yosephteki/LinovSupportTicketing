@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -21,7 +20,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
+
 import LinovSupport.Ticketing.encrypt.BCrypt;
 import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
@@ -85,31 +85,67 @@ public class AccountV2Controller {
 
 	int i = 1;
 
-	@GetMapping("")
-	public ResponseEntity<?> findAll() {
+//	@GetMapping("")
+//	public ResponseEntity<?> findAll() {
+//		try {
+//			List<AccountV2> accounts = accountV2Service.findAll();
+////			List<AllaccountInfo> aai = new ArrayList<AllaccountInfo>();
+//			AllaccountInfo aai = new AllaccountInfo();
+//			for(AccountV2 account : accounts) {
+//				AccountV2 account2 = new AccountV2();
+//				account2.setIdAccount(account.getIdAccount());
+//				
+//				aai.setIdAccount(account.getIdAccount());
+//				aai.setNamaAccount(account.getNama());
+//				aai.setTeleponAccount(account.getTelepon());
+//				aai.setAlamatAccount(account.getAlamat());
+//				aai.setActive(account.isActive());
+//				aai.setAccountPic(account.getPics());
+//				aai.setAgenAccount(agenService.findByAccount(account));
+//				aai.getAgenAccount().setAccount(account2);
+//				aai.setGambarAccount(gambarService.findById(account.getIdGambar()));
+//				for(PicV2 pic : aai.getAccountPic()) {
+//					pic.setAccount(account2);
+//				}
+//			}
+//			
+//
+//			return new ResponseEntity<>(aai, HttpStatus.OK);
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//		}
+//	}
+	
+	@GetMapping("") 
+	ResponseEntity<?> findAll(){
 		try {
 			List<AccountV2> accounts = accountV2Service.findAll();
-			AllaccountInfo aai = new AllaccountInfo();
+			List<AllaccountInfo> ai = new ArrayList<AllaccountInfo>();
+			
 			for(AccountV2 account : accounts) {
+				AllaccountInfo allacount = new AllaccountInfo();
 				AccountV2 account2 = new AccountV2();
 				account2.setIdAccount(account.getIdAccount());
 				
-				aai.setIdAccount(account.getIdAccount());
-				aai.setNamaAccount(account.getNama());
-				aai.setTeleponAccount(account.getTelepon());
-				aai.setAlamatAccount(account.getAlamat());
-				aai.setActive(account.isActive());
-				aai.setAccountPic(account.getPics());
-				aai.setAgenAccount(agenService.findByAccount(account));
-				aai.getAgenAccount().setAccount(account2);
-				aai.setGambarAccount(gambarService.findById(account.getIdGambar()));
-				for(PicV2 pic : aai.getAccountPic()) {
+				allacount.setIdAccount(account.getIdAccount());
+				allacount.setNamaAccount(account.getNama());
+				allacount.setTeleponAccount(account.getTelepon());
+				allacount.setAlamatAccount(account.getAlamat());
+				allacount.setActive(account.isActive());
+				allacount.setAccountPic(account.getPics());
+				allacount.setAgenAccount(agenService.findByAccount(account));
+				allacount.getAgenAccount().setAccount(account2);
+				allacount.setGambarAccount(gambarService.findById(account.getIdGambar()));
+				
+				for(PicV2 pic :allacount.getAccountPic()) {
 					pic.setAccount(account2);
 				}
+				
+				ai.add(allacount);
+				
 			}
+			return new ResponseEntity<>(ai, HttpStatus.OK);
 			
-
-			return new ResponseEntity<>(aai, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}

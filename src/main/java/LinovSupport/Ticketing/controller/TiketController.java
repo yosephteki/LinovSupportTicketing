@@ -83,31 +83,31 @@ public class TiketController {
 		}
 	}
 
-	@GetMapping("/filter/{pic}/{level}")
-	public ResponseEntity<?> findByFilter(@PathVariable String pic,@PathVariable Level level) {
-		PicV2 pic1 = new PicV2();
-		if (!pic.trim().isEmpty()) {
-			pic1 = picService.findById(pic);
-		}else {
-			pic1 = null;
-		}
-		List<Tiket> tikets = tiketService.findByFilter(pic1,level);
-		for(Tiket tiket : tikets) {
-			tiket.getIdPic().getAccount().setPics(null);
-			tiket.getIdPic().getAccount().setAgen(null);
-			for(DetailTiket dtl : tiket.getDetailTiket()) {
-				dtl.setIdTiket(null);
-			}
-		}
-		return ResponseEntity.ok(tikets);
-	}
+//	@GetMapping("/filter/{pic}/{level}")
+//	public ResponseEntity<?> findByFilter(@PathVariable String pic,@PathVariable Level level) {
+//		PicV2 pic1 = new PicV2();
+//		if (!pic.trim().isEmpty()) {
+//			pic1 = picService.findById(pic);
+//		}else {
+//			pic1 = null;
+//		}
+//		List<Tiket> tikets = tiketService.findByFilter(pic1,level);
+//		for(Tiket tiket : tikets) {
+//			tiket.getIdPic().getAccount().setPics(null);
+//			tiket.getIdPic().getAccount().setAgen(null);
+//			for(DetailTiket dtl : tiket.getDetailTiket()) {
+//				dtl.setIdTiket(null);
+//			}
+//		}
+//		return ResponseEntity.ok(tikets);
+//	}
 
 	@GetMapping("/level/{level}")
 	public ResponseEntity<?> findByLevel(@PathVariable Level level) {
 		List<Tiket> tikets = tiketService.findByLevel(level);
 		for(Tiket tiket : tikets) {
 			tiket.getIdPic().getAccount().setPics(null);
-			tiket.getIdPic().getAccount().setAgen(null);
+//			tiket.getIdPic().getAccount().setAgen(null);
 			for(DetailTiket dtl : tiket.getDetailTiket()) {
 				dtl.setIdTiket(null);
 			}
@@ -132,7 +132,7 @@ public class TiketController {
 			}
 			msg = "Data Tiket berhasil ditambah";
 			return ResponseEntity.ok(msg);
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 

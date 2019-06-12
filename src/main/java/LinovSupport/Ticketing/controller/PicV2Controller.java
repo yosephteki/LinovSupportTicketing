@@ -56,7 +56,6 @@ public class PicV2Controller {
 			String encrypt = BCrypt.hashpw(pass, bc.gensalt());
 			
 			User user = new User();
-			user.setUsername(pic.getUsername());
 			user.setPassword(encrypt);
 			user.setIdRole(pic.getRole());
 			user.setDetailRole(newPic.getIdPic());

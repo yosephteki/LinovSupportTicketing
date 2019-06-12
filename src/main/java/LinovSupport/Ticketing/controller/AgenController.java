@@ -80,7 +80,6 @@ public class AgenController {
 			String pass = agen.getPassword();
 			String encrypt = BCrypt.hashpw(pass,bc.gensalt());
 			User user = new User();
-			user.setUsername(agen.getUsername());
 			user.setPassword(encrypt);
 			user.setIdRole(agen.getRole());
 			user.setDetailRole(newAgen.getIdAgen());
