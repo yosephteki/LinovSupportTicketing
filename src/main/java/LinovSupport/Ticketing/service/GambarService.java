@@ -36,7 +36,7 @@ public class GambarService {
 		return gambarDao.findById(id);
 	}
 	
-	public Gambar findByBk(int kode) {
+	public Gambar findByBk(String kode) {
 		return gambarDao.findByBk(kode);
 	}
 

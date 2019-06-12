@@ -4,6 +4,7 @@
 package LinovSupport.Ticketing.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,7 @@ import LinovSupport.Ticketing.encrypt.RandomString;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Agen;
+import LinovSupport.Ticketing.model.AllaccountInfo;
 import LinovSupport.Ticketing.model.Gambar;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.User;
@@ -86,50 +88,28 @@ public class AccountV2Controller {
 	@GetMapping("")
 	public ResponseEntity<?> findAll() {
 		try {
-			List<AccountV2> account = accountV2Service.findAll();
-			AccountV2 newAccount = new AccountV2();
-			for (AccountV2 acc : account) {
-
-				List<PicV2> Pics = new ArrayList<PicV2>();
-				for (PicV2 pic : acc.getPics()) {
-					pic.setAccount(newAccount);
-					Pics.add(pic);
-				}
-				acc.setPics(Pics);
-			}
-
-			return new ResponseEntity<>(account, HttpStatus.OK);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
-	}
-
-	@GetMapping("/all")
-	public ResponseEntity<?> findAllv2() {
-		try {
 			List<AccountV2> accounts = accountV2Service.findAll();
-			for (AccountV2 account : accounts) {
-				AccountV2 acc1 = new AccountV2();
-				acc1.setIdAccount(account.getIdAccount());
-				acc1.setAgen(null);
-				Agen newAgent = agenService.findByAccount(account);
-				newAgent.setAccount(acc1);
-				if (newAgent.getIdAgen() == null) {
-					account.setAgen(null);
-				} else {
-					account.setAgen(newAgent);
+			AllaccountInfo aai = new AllaccountInfo();
+			for(AccountV2 account : accounts) {
+				AccountV2 account2 = new AccountV2();
+				account2.setIdAccount(account.getIdAccount());
+				
+				aai.setIdAccount(account.getIdAccount());
+				aai.setNamaAccount(account.getNama());
+				aai.setTeleponAccount(account.getTelepon());
+				aai.setAlamatAccount(account.getAlamat());
+				aai.setActive(account.isActive());
+				aai.setAccountPic(account.getPics());
+				aai.setAgenAccount(agenService.findByAccount(account));
+				aai.getAgenAccount().setAccount(account2);
+				aai.setGambarAccount(gambarService.findById(account.getIdGambar()));
+				for(PicV2 pic : aai.getAccountPic()) {
+					pic.setAccount(account2);
 				}
-				account.setGambar(gambarService.findById(account.getIdGambar()));
-				AccountV2 acc = new AccountV2();
-				acc.setIdAccount(account.getIdAccount());
-				List<PicV2> pics = new ArrayList<PicV2>();
-				for (PicV2 picss : account.getPics()) {
-					picss.setAccount(acc);
-					pics.add(picss);
-				}
-				account.setPics(pics);
 			}
-			return new ResponseEntity<>(accounts, HttpStatus.OK);
+			
+
+			return new ResponseEntity<>(aai, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
@@ -140,17 +120,17 @@ public class AccountV2Controller {
 		AccountV2 account = accountV2Service.findById(idAccount);
 		AccountV2 acc1 = new AccountV2();
 		acc1.setIdAccount(account.getIdAccount());
-		acc1.setAgen(null);
+//		acc1.setAgen(null);
 		Agen newAgent = agenService.findByAccount(account);
 
 		newAgent.setAccount(acc1);
 		if (newAgent.getIdAgen() == null) {
-			account.setAgen(null);
+//			account.setAgen(null);
 		} else {
-			account.setAgen(newAgent);
+//			account.setAgen(newAgent);
 		}
 
-		account.setGambar(gambarService.findById(account.getIdGambar()));
+//		account.setGambar(gambarService.findById(account.getIdGambar()));
 		AccountV2 acc = new AccountV2();
 		acc.setIdAccount(account.getIdAccount());
 		List<PicV2> pics = new ArrayList<PicV2>();
@@ -218,30 +198,30 @@ public class AccountV2Controller {
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 //		}
 //	}
-	@PostMapping("/param")
-	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,
-			@RequestParam("nama") String nama, @RequestParam("telepon") String telepon,
-			@RequestParam("alamat") String alamat, @RequestParam("gambar") MultipartFile gambar,
-			@RequestParam("active") boolean active) {
-		String msg;
-		try {
-			AccountV2 account = new AccountV2();
-			account.setIdAccount(idaccount);
-			account.setNama(nama);
-			account.setTelepon(telepon);
-			account.setAlamat(alamat);
-			account.setActive(active);
-			accountV2Service.insertAccount(account);
-
-			Gambar fileGambar = new Gambar();
-			fileGambar.setGambar(gambar.getBytes());
-			gambarService.create(fileGambar);
-			msg = "success";
-			return ResponseEntity.ok(msg);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
-	}
+//	@PostMapping("/param")
+//	private ResponseEntity<?> insertAccountv2(@RequestParam("idAccount") String idaccount,
+//			@RequestParam("nama") String nama, @RequestParam("telepon") String telepon,
+//			@RequestParam("alamat") String alamat, @RequestParam("gambar") MultipartFile gambar,
+//			@RequestParam("active") boolean active) {
+//		String msg;
+//		try {
+//			AccountV2 account = new AccountV2();
+//			account.setIdAccount(idaccount);
+//			account.setNama(nama);
+//			account.setTelepon(telepon);
+//			account.setAlamat(alamat);
+//			account.setActive(active);
+//			accountV2Service.insertAccount(account);
+//
+//			Gambar fileGambar = new Gambar();
+//			fileGambar.setGambar(gambar.getBytes());
+//			gambarService.create(fileGambar);
+//			msg = "success";
+//			return ResponseEntity.ok(msg);
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//		}
+//	}
 
 	@PostMapping("/params")
 	private ResponseEntity<?> insertAccountv3(@RequestParam("account") String inputAccount,
@@ -260,7 +240,8 @@ public class AccountV2Controller {
 			accountV2.setActive(account.isActive());
 
 			Gambar gambar = new Gambar();
-			int kodeGambar = accountV2.getNama().hashCode();
+			LocalDateTime now = LocalDateTime.now();
+			String kodeGambar = accountV2.getNama()+now;
 			gambar.setKodeGambar(kodeGambar);
 			gambar.setGambar(inputGambar.getBytes());
 			gambarService.create(gambar);
@@ -341,7 +322,7 @@ public class AccountV2Controller {
 	public ResponseEntity<?> deleteAccount(@PathVariable String id) {
 		String msg;
 		try {
-			accountV2Service.findById(id).setAgen(null);
+//			accountV2Service.findById(id).setAgen(null);
 			accountV2Service.deleteAccount(id);
 			msg = "data berhasil dihapus";
 			return ResponseEntity.ok(msg);
@@ -364,8 +345,8 @@ public class AccountV2Controller {
 			if (agen.getIdAgen() != null) {
 				agenService.delete(agen.getIdAgen());
 			}
-			account.setAgen(null);
-			accountV2Service.findById(id).setAgen(null);
+//			account.setAgen(null);
+//			accountV2Service.findById(id).setAgen(null);
 			accountV2Service.deleteAccount(id);
 			msg = "Data berhasil dihapus";
 
@@ -389,8 +370,8 @@ public class AccountV2Controller {
 			if (agen.getIdAgen() != null) {
 				agenService.delete(agen.getIdAgen());
 			}
-			account.setAgen(null);
-			accountV2Service.findById(id).setAgen(null);
+//			account.setAgen(null);
+//			accountV2Service.findById(id).setAgen(null);
 			accountV2Service.deleteAccount(id);
 			msg = "Data berhasil dihapus";
 

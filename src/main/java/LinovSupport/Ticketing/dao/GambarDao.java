@@ -31,7 +31,7 @@ public Gambar findById(String id) {
 
 @SuppressWarnings("unchecked")
 @Transactional
-public Gambar findByBk(int kode) {
+public Gambar findByBk(String kode) {
 	List<Gambar> list = super.entityManager
 			.createQuery("FROM Gambar WHERE kodeGambar=:kode")
 			.setParameter("kode", kode)
