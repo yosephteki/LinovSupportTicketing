@@ -53,12 +53,6 @@ public class AgenService {
 		if (!agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
 			throw new ErrorException("Agen tidak ditemukan");
 		}
-		if (!agenDao.isIdExist(agen.getIdAgen())) {
-			throw new ErrorException("ID Agent tidak ditemukan!");
-		}
-		if (!agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
-			throw new ErrorException("User tidak dtemukan!");
-		}
 		agenDao.updateAgen(agen);
 	}
 
