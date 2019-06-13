@@ -50,28 +50,6 @@ public class AccountV2 {
 			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<PicV2> pics;
 	
-	@OneToOne
-	private Agen agen;
-
-	@OneToOne
-	private Gambar gambar;
-	
-	public Gambar getGambar() {
-		return gambar;
-	}
-
-	public void setGambar(Gambar gambar) {
-		this.gambar = gambar;
-	}
-
-	public Agen getAgen() {
-		return agen;
-	}
-
-	public void setAgen(Agen agen) {
-		this.agen = agen;
-	}
-
 	public String getIdAccount() {
 		return idAccount;
 	}

@@ -44,21 +44,15 @@ public class AgenService {
 	}
 
 	public void updateAgen(Agen agen) throws ErrorException {
-//		if (agen.getNama().isEmpty()) {
-//			throw new ErrorException("Nama tidak boleh kosong!");
-//		}
-//		if (agen.getEmail().isEmpty()) {
-//			throw new ErrorException("Email tidak boleh kosong!");
-//		}
-//		if (!agenDao.isIdExist(agen.getIdAgen())) {
-//			throw new ErrorException("ID Agent tidak ditemukan!");
-//		}
-//		if (!agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
-//			throw new ErrorException("User tidak dtemukan!");
-//		}
-//		if (!accDao.isIdExist(acc.getIdAccount())) {
-//			throw new ErrorException("id account tidak ditemukan");
-//		}
+		if (agen.getNama().isEmpty()) {
+			throw new ErrorException("Nama tidak boleh kosong!");
+		}
+		if (agen.getEmail().isEmpty()) {
+			throw new ErrorException("Email tidak boleh kosong!");
+		}
+		if (!agenDao.isBkExist(agen.getAccount(), agen.getEmail())) {
+			throw new ErrorException("Agen tidak ditemukan");
+		}
 		agenDao.updateAgen(agen);
 	}
 

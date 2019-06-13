@@ -26,16 +26,17 @@ public class Gambar {
 	private String idGambar;
 
 	@Column(name ="kode_gambar")
-	private int kodeGambar;
+	private String kodeGambar;
 	
 	@Column(name = "gambar")
 	private byte[] gambar;
 	
-	public int getKodeGambar() {
+
+	public String getKodeGambar() {
 		return kodeGambar;
 	}
 
-	public void setKodeGambar(int kodeGambar) {
+	public void setKodeGambar(String kodeGambar) {
 		this.kodeGambar = kodeGambar;
 	}
 

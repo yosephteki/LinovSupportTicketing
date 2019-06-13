@@ -46,6 +46,7 @@ public class TiketService {
 	}
 
 	public void insertTiket(Tiket tiket) throws ErrorException {
+		
 		tiketDao.insertTiket(tiket);
 	}
 

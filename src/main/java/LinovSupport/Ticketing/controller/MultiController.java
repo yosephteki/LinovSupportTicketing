@@ -51,7 +51,6 @@ public class MultiController {
 			newAgen = agenService.findByBK(multi.getAccount(),multi.getEmail());
 			
 			User user = new User();
-			user.setUsername(multi.getUsername());
 			user.setPassword(multi.getPassword());
 			user.setIdRole(multi.getRole());
 			user.setDetailRole(newAgen.getIdAgen());
