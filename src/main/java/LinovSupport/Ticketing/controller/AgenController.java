@@ -107,7 +107,7 @@ public class AgenController {
 			msg.setSentDate(new Date());
 
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent("Anda telah terdaftar sebagai <b>Agent</b> di Linov support ticketing <br> Gunakan Informasi ini untuk login : <br> email = <b>" + newAgen.getEmail() + "</b> password = <b>" + pass+"</b>", "text/html");
+			messageBodyPart.setContent("Anda telah terdaftar sebagai <b>Agent</b> di Linov support ticketing <br> Gunakan Informasi ini untuk login : <br> username = <b>" + newAgen.getEmail() + "</b> password = <b>" + pass+"</b>", "text/html");
 
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(messageBodyPart);

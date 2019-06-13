@@ -1,6 +1,18 @@
 package LinovSupport.Ticketing.controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +51,7 @@ public class PicV2Controller {
 
 	@PostMapping("")
 	public ResponseEntity<?> insertPic(@RequestBody Multi pic) throws ErrorException {
-		String msg;
+		String msgs;
 		try {
 
 			PicV2 picc = new PicV2();
@@ -62,9 +74,39 @@ public class PicV2Controller {
 			user.setIdRole(pic.getRole());
 			user.setDetailRole(newPic.getIdPic());
 			userService.insertUser(user);
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
 
-			msg = "Berhasil menambahkan data Pic";
-			return ResponseEntity.ok(msg);
+			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication("yoseph.3912@gmail.com", "zedoteki7777");
+				}
+			});
+			Message msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("yosephteki@gmail.com", false));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(newPic.getEmail()));
+			msg.setSubject("Pendaftaran Akun Linov Ticketing");
+			msg.setContent("Gunakan Informasi ini untuk login : <br> email = " + newPic.getEmail() + " password = " + pass, "text/html");
+			msg.setSentDate(new Date());
+
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setContent("Anda telah terdaftar sebagai <b>Pic</b> di Linov support ticketing <br> Gunakan Informasi ini untuk login : <br> username = <b>" + newPic.getEmail() + "</b> password = <b>" + pass+"</b>", "text/html");
+
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+			MimeBodyPart attachPart = new MimeBodyPart();
+
+//			   attachPart.attachFile("hewan.png");
+//			   multipart.addBodyPart(attachPart);
+			msg.setContent(multipart);
+			Transport.send(msg);
+
+			
+			msgs = "Berhasil menambahkan data Agen";
+			return ResponseEntity.ok(msgs);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
@@ -88,7 +130,7 @@ public class PicV2Controller {
 		String msg;
 		try {
 			picService.updatePic(pic);
-			msg = "success updatin g pic";
+			msg = "success updating pic";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -150,7 +150,7 @@ public class TiketController {
 		}
 	}
 	@PostMapping("/{idTiket}")
-	public ResponseEntity<?> updateDetailTiket(@PathVariable("")String idTiket,@RequestBody DetailTiket detail){
+	public ResponseEntity<?> insertDetailTiket(@PathVariable("")String idTiket,@RequestBody DetailTiket detail){
 		try {
 			String msg;
 			Tiket tiket = tiketService.findById(idTiket);
