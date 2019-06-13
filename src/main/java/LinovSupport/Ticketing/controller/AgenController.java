@@ -83,41 +83,9 @@ public class AgenController {
 			user.setPassword(encrypt);
 			user.setIdRole(agen.getRole());
 			user.setDetailRole(newAgen.getIdAgen());
-
-			
+			System.out.println("AAAAAAAAAAAAAAAAAAA");
 			userService.insertUser(user);
-			
-//			Properties props = new Properties();
-//			props.put("mail.smtp.auth", "true");
-//			props.put("mail.smtp.starttls.enable", "true");
-//			props.put("mail.smtp.host", "smtp.gmail.com");
-//			props.put("mail.smtp.port", "587");
-//
-//			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-//				protected PasswordAuthentication getPasswordAuthentication() {
-//					return new PasswordAuthentication("yoseph.3912@gmail.com", "zedoteki7777");
-//				}
-//			});
-//			Message msg = new MimeMessage(session);
-//			msg.setFrom(new InternetAddress("yosephteki@gmail.com", false));
-//			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(newAgen.getEmail()));
-//			msg.setSubject("Pendaftaran Akun Linov Ticketing");
-//			msg.setContent("Gunakan Informasi ini untuk login : <br> email = " + newAgen.getEmail() + " password = " + pass, "text/html");
-//			msg.setSentDate(new Date());
-//
-//			MimeBodyPart messageBodyPart = new MimeBodyPart();
-//			messageBodyPart.setContent("Gunakan Informasi ini untuk login : <br> email = " + newAgen.getEmail() + " password = " + pass, "text/html");
-//
-//			Multipart multipart = new MimeMultipart();
-//			multipart.addBodyPart(messageBodyPart);
-//			MimeBodyPart attachPart = new MimeBodyPart();
-//
-////			   attachPart.attachFile("hewan.png");
-////			   multipart.addBodyPart(attachPart);
-//			msg.setContent(multipart);
-//			Transport.send(msg);
-
-			
+	
 			msgs = "Berhasil menambahkan data Agen";
 			return ResponseEntity.ok(msgs);
 		} catch (Exception e) {

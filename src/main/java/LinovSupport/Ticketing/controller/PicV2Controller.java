@@ -1,4 +1,5 @@
 package LinovSupport.Ticketing.controller;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,40 +28,40 @@ import LinovSupport.Ticketing.service.UserService;
 @RestController
 @RequestMapping("/pic")
 public class PicV2Controller {
-	
+
 	@Autowired
 	private PicV2Service picService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	private BCrypt bc;
 
 	@PostMapping("")
 	public ResponseEntity<?> insertPic(@RequestBody Multi pic) throws ErrorException {
 		String msg;
 		try {
-			
+
 			PicV2 picc = new PicV2();
 			picc.setIdPic(pic.getId());
 			picc.setAccount(pic.getAccount());
 			picc.setEmail(pic.getEmail());
 			picc.setActive(pic.isActive());
 			picc.setNama(pic.getNama());
-			
+
 			picService.insertPic(picc);
-			
+
 			PicV2 newPic = new PicV2();
-			newPic = picService.findByBk(pic.getAccount(),pic.getEmail());
+			newPic = picService.findByBk(pic.getAccount(), pic.getEmail());
 			String pass = pic.getPassword();
 			String encrypt = BCrypt.hashpw(pass, bc.gensalt());
-			
+
 			User user = new User();
 			user.setPassword(encrypt);
 			user.setIdRole(pic.getRole());
 			user.setDetailRole(newPic.getIdPic());
 			userService.insertUser(user);
-			
+
 			msg = "Berhasil menambahkan data Pic";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) {
@@ -80,6 +81,7 @@ public class PicV2Controller {
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 //		}
 //	}
+
 	@PutMapping("")
 	public ResponseEntity<?> update(@RequestBody PicV2 pic) throws ErrorException {
 		String msg;
@@ -105,24 +107,21 @@ public class PicV2Controller {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<?>findAll() {
-		try {	
+	public ResponseEntity<?> findAll() {
+		try {
 			List<PicV2> pics = picService.findAll();
-			
-			for(PicV2 pic : pics) {
-				AccountV2 acc= new AccountV2();
+			for (PicV2 pic : pics) {
+				AccountV2 acc = new AccountV2();
 				String idAcc = pic.getAccount().getIdAccount();
 				acc.setIdAccount(idAcc);
 				pic.setAccount(acc);
-				}
-			return new ResponseEntity<>(pics,HttpStatus.OK);
+			}
+			return new ResponseEntity<>(pics, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-		
-		
 	}
-	
+
 	@GetMapping("/{idPic}")
 	public ResponseEntity<?> findById(@PathVariable String idPic) {
 		PicV2 pic = picService.findById(idPic);
@@ -132,25 +131,26 @@ public class PicV2Controller {
 		pic.setAccount(account);
 		return ResponseEntity.ok(pic);
 	}
-	
 
 	@GetMapping("/email/{email}")
-	public ResponseEntity<?> findByBk(@RequestBody AccountV2 account,@PathVariable String email) {
+	public ResponseEntity<?> findByBk(@RequestBody AccountV2 account, @PathVariable String email) {
 		PicV2 pic = picService.findByBk(account, email);
-		pic.setAccount(null);
+		AccountV2 acc = new AccountV2();
+		acc.setIdAccount(account.getIdAccount());
+		pic.setAccount(acc);
 		return ResponseEntity.ok(pic);
-		}
+	}
 
 	@GetMapping("/{email}/{nama}")
-	public ResponseEntity<?> findByFilter(@PathVariable String email,@PathVariable String nama) {
+	public ResponseEntity<?> findByFilter(@PathVariable String email, @PathVariable String nama) {
 		List<PicV2> picV2s = picService.findByFilter(email, nama);
-		
-		for(PicV2 pic : picV2s) {
+
+		for (PicV2 pic : picV2s) {
 			AccountV2 account = new AccountV2();
 			account.setIdAccount(pic.getAccount().getIdAccount());
 			account.setNama(pic.getAccount().getNama());
 			pic.setAccount(account);
 		}
-		return new ResponseEntity<>(picV2s,HttpStatus.OK);
+		return new ResponseEntity<>(picV2s, HttpStatus.OK);
 	}
 }

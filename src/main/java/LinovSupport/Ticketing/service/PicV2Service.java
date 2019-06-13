@@ -60,9 +60,9 @@ public class PicV2Service {
 		if (!picV2Dao.isBkExist(pic.getAccount(), pic.getEmail())) {
 			throw new ErrorException("Pic tidak ditemukan!");
 		}
-		if(picV2Dao.findById(pic.getAccount().getIdAccount()).equals(pic.getAccount().getIdAccount())) {
-			throw new ErrorException("id pic dan id account tidak cocok");
-		}
+//		if(picV2Dao.findById(pic.getAccount().getIdAccount()).equals(pic.getAccount().getIdAccount())) {
+//			throw new ErrorException("id pic dan id account tidak cocok");
+//		}
 		picV2Dao.updatePic(pic);
 	}
 
