@@ -6,6 +6,18 @@ package LinovSupport.Ticketing.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +82,8 @@ public class TiketController {
 				acc.setPics(null);
 				newPic.setIdPic(idpic);
 				newPic.setAccount(acc);
+				newPic.setNama(tics.getIdPic().getNama());
+				newPic.setEmail(tics.getIdPic().getEmail());
 				List<DetailTiket> detail = new ArrayList<DetailTiket>();
 				tics.setIdPic(newPic);
 				for (DetailTiket det : tics.getDetailTiket()) {
@@ -117,10 +131,21 @@ public class TiketController {
 		
 		return ResponseEntity.ok(tikets);
 	}
+	
+	@GetMapping("/status/{status}")
+	public ResponseEntity<?> findByStatus(@PathVariable Status status){
+		List<Tiket> tikets = tiketService.findByStatus(status);
+		for(Tiket tiket : tikets) {
+			tiket.getIdPic().getAccount().setPics(null);
+			tiket.setDetailTiket(null);
+		}
+		return ResponseEntity.ok(tikets);
+		
+	}
 
 	@PostMapping("")
 	public ResponseEntity<?> insertTiket(@RequestBody Tiket tiket) throws ErrorException {
-		String msg = null;
+		String msgs = null;
 		try {
 			tiketService.insertTiket(tiket);
 			Tiket tiket2 = tiketService.findByBk(tiket.getJudulTiket(), tiket.getIdPic());
@@ -130,7 +155,40 @@ public class TiketController {
 				dtl.setWaktu(now);
 				tiketService.insertDetail(dtl);
 			}
-			msg = "Data Tiket berhasil ditambah";
+			
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
+			
+			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication("yoseph.3912@gmail.com", "zedoteki7777");
+				}
+			});
+			Message msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("yosephteki@gmail.com", false));
+			PicV2 pic = picService.findById(tiket2.getIdPic().getIdPic());
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(pic.getEmail()));
+			msg.setSubject("Pendaftaran Akun Linov Ticketing");
+			msg.setContent("", "text/html");
+			msg.setSentDate(new Date());
+
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setContent("Tiket Baru telah dibuat <br> ", "text/html");
+
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+			MimeBodyPart attachPart = new MimeBodyPart();
+
+//			   attachPart.attachFile("hewan.png");
+//			   multipart.addBodyPart(attachPart);
+			msg.setContent(multipart);
+			Transport.send(msg);
+
+			
+			msgs = "Data Tiket berhasil ditambah";
 			return ResponseEntity.ok(msg);
 		} catch (Exception e) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

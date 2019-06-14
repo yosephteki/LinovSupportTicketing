@@ -1,4 +1,17 @@
 package LinovSupport.Ticketing.controller;			
+import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.springframework.beans.factory.annotation.Autowired;			
 import org.springframework.http.HttpStatus;			
 import org.springframework.http.ResponseEntity;			
@@ -52,7 +65,7 @@ public class AdminController {
 			
 	@PostMapping("")		
 	public ResponseEntity<?> insertAdmin(@RequestBody Multi admin) throws ErrorException {		
-		String msg;	
+		String msgs;	
 		try {	
 			Admin admint = new Admin();
 			
@@ -79,8 +92,40 @@ public class AdminController {
 			
 			userService.insertUser(user);
 			
-			msg = "Data berhasil di tambah";
-			return ResponseEntity.ok(msg);
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
+			
+			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication("yoseph.3912@gmail.com", "zedoteki7777");
+				}
+			});
+			Message msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("yosephteki@gmail.com", false));
+			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(newAdmin.getEmail()));
+			msg.setSubject("Pendaftaran Akun Linov Ticketing");
+			msg.setContent("Gunakan Informasi ini untuk login : <br> email = " + newAdmin.getEmail() + " password = " + pass, "text/html");
+			msg.setSentDate(new Date());
+
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setContent("Anda telah terdaftar sebagai <b>Admin</b> di Linov support ticketing <br> Gunakan Informasi ini untuk login : <br> username = <b>" + newAdmin.getEmail() + "</b> password = <b>" + pass+"</b>", "text/html");
+
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+			MimeBodyPart attachPart = new MimeBodyPart();
+
+//			   attachPart.attachFile("hewan.png");
+//			   multipart.addBodyPart(attachPart);
+			msg.setContent(multipart);
+			Transport.send(msg);
+
+			
+			
+			msgs = "Data berhasil di tambah";
+			return ResponseEntity.ok(msgs);
 		} catch (Exception e) {	
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}	

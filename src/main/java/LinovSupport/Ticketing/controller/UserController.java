@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import LinovSupport.Ticketing.encrypt.BCrypt;
+import LinovSupport.Ticketing.model.AccountV2;
 import LinovSupport.Ticketing.model.Admin;
 import LinovSupport.Ticketing.model.Agen;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.User;
 import LinovSupport.Ticketing.model.masterUser;
+import LinovSupport.Ticketing.service.AccountV2Service;
 import LinovSupport.Ticketing.service.AdminService;
 import LinovSupport.Ticketing.service.AgenService;
 import LinovSupport.Ticketing.service.PicV2Service;
@@ -34,6 +36,9 @@ import LinovSupport.Ticketing.service.UserService;
 public class UserController {
 	
 	BCrypt bc = new BCrypt();
+	
+	@Autowired
+	private AccountV2Service accountService;
 	
 	@Autowired
 	private PicV2Service picService;
@@ -92,11 +97,19 @@ public class UserController {
 					mUser.setNama(pic.getNama());
 					mUser.setEmail(pic.getEmail());
 					mUser.setStatus(pic.isActive());
+					mUser.setAccount(pic.getAccount());
+					mUser.getAccount().setPics(null);
+					AccountV2 account = accountService.findById(pic.getAccount().getIdAccount());
+					mUser.setAgen(agenService.findByAccount(account));
+					
 				}
 				if(agen.getIdAgen() != null && agen.getIdAgen().matches(mUser.getUsercode())) {
 					mUser.setNama(agen.getNama());
 					mUser.setEmail(agen.getEmail());
 					mUser.setStatus(agen.isActive());
+					mUser.setAccount(agen.getAccount());
+					mUser.getAccount().setPics(null);
+					
 				}
 				if(admin.getIdAdmin() != null && admin.getIdAdmin().matches(mUser.getUsercode())) {
 					mUser.setNama(admin.getNama());

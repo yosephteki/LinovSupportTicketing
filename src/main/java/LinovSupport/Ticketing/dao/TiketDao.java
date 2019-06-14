@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import LinovSupport.Ticketing.enumeration.Level;
+import LinovSupport.Ticketing.enumeration.Status;
 import LinovSupport.Ticketing.model.DetailTiket;
 import LinovSupport.Ticketing.model.PicV2;
 import LinovSupport.Ticketing.model.Tiket;
@@ -131,9 +132,9 @@ public class TiketDao extends CommonDao {
 	}
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<DetailTiket> findByStatus(String status){
-		List<DetailTiket> tiket = super.entityManager
-				.createQuery("FROM DetailTiket WHERE status =: status")
+	public List<Tiket> findByStatus(Status status){
+		List<Tiket> tiket = super.entityManager
+				.createQuery("FROM Tiket WHERE status =: status")
 				.setParameter("status", status)
 				.getResultList();
 		return tiket;

@@ -14,9 +14,30 @@ public class masterUser {
 	private String role;
 	private String nama;
 	private String email;
+	private AccountV2 account;
+	private PicV2 pic;
+	private Agen agen;
 	private String usercode;
 	private boolean status;
 	
+	public AccountV2 getAccount() {
+		return account;
+	}
+	public void setAccount(AccountV2 account) {
+		this.account = account;
+	}
+	public PicV2 getPic() {
+		return pic;
+	}
+	public void setPic(PicV2 pic) {
+		this.pic = pic;
+	}
+	public Agen getAgen() {
+		return agen;
+	}
+	public void setAgen(Agen agen) {
+		this.agen = agen;
+	}
 	public String getUsercode() {
 		return usercode;
 	}

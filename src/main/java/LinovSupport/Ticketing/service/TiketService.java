@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import LinovSupport.Ticketing.dao.TiketDao;
 import LinovSupport.Ticketing.enumeration.Level;
+import LinovSupport.Ticketing.enumeration.Status;
 import LinovSupport.Ticketing.exception.ErrorException;
 import LinovSupport.Ticketing.model.DetailTiket;
 import LinovSupport.Ticketing.model.PicV2;
@@ -43,6 +44,9 @@ public class TiketService {
 
 	public List<Tiket> findByLevel(Level level) {
 		return tiketDao.findByLevel(level);
+	}
+	public List<Tiket> findByStatus(Status status){
+		return tiketDao.findByStatus(status);
 	}
 
 	public void insertTiket(Tiket tiket) throws ErrorException {
