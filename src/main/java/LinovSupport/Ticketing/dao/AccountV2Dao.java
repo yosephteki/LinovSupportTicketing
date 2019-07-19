@@ -18,15 +18,16 @@ public class AccountV2Dao extends CommonDao{
 	
 	@Transactional
 	public AccountV2 findById(String id) {
-		AccountV2 account;
-		try {
-		 account  =  (AccountV2)super.entityManager
-				.createQuery("FROM AccountV2 WHERE idAccount=:id")
-				.setParameter("id", id)
-				.getSingleResult();
-		}catch(Exception e) {
-		return account = new AccountV2();
-	}
+		AccountV2 account = super.entityManager.find(AccountV2.class,id);
+		
+//		try {
+//		 account  =  (AccountV2)super.entityManager
+//				.createQuery("FROM AccountV2 WHERE idAccount=:id")
+//				.setParameter("id", id)
+//				.getSingleResult();
+//		}catch(Exception e) {
+//		return account = new AccountV2();
+//	}
 		return account;
 	}
 	

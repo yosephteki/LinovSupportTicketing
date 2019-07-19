@@ -153,29 +153,29 @@ public class AccountV2Controller {
 
 	@GetMapping("/{idAccount}")
 	public ResponseEntity<?> findById(@PathVariable String idAccount) {
-		AccountV2 account = accountV2Service.findById(idAccount);
-		AccountV2 acc1 = new AccountV2();
-		acc1.setIdAccount(account.getIdAccount());
-//		acc1.setAgen(null);
-		Agen newAgent = agenService.findByAccount(account);
-
-		newAgent.setAccount(acc1);
-		if (newAgent.getIdAgen() == null) {
-//			account.setAgen(null);
-		} else {
-//			account.setAgen(newAgent);
-		}
-
-//		account.setGambar(gambarService.findById(account.getIdGambar()));
-		AccountV2 acc = new AccountV2();
-		acc.setIdAccount(account.getIdAccount());
-		List<PicV2> pics = new ArrayList<PicV2>();
-		for (PicV2 picss : account.getPics()) {
-			picss.setAccount(acc);
-			pics.add(picss);
-		}
-		account.setPics(pics);
-		return ResponseEntity.ok(account);
+//		AccountV2 account = accountV2Service.findById(idAccount);
+//		AccountV2 acc1 = new AccountV2();
+//		acc1.setIdAccount(account.getIdAccount());
+////		acc1.setAgen(null);
+//		Agen newAgent = agenService.findByAccount(account);
+//
+//		newAgent.setAccount(acc1);
+//		if (newAgent.getIdAgen() == null) {
+////			account.setAgen(null);
+//		} else {
+////			account.setAgen(newAgent);
+//		}
+//
+////		account.setGambar(gambarService.findById(account.getIdGambar()));
+//		AccountV2 acc = new AccountV2();
+//		acc.setIdAccount(account.getIdAccount());
+//		List<PicV2> pics = new ArrayList<PicV2>();
+//		for (PicV2 picss : account.getPics()) {
+//			picss.setAccount(acc);
+//			pics.add(picss);
+//		}
+//		account.setPics(pics);
+		return ResponseEntity.ok(accountV2Service.findById(idAccount));
 	}
 
 	@GetMapping("/nama/{nama}")

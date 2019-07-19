@@ -4,6 +4,8 @@
 package LinovSupport.Ticketing.dao;
 
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,19 +18,31 @@ import LinovSupport.Ticketing.model.Agen;
 @Repository("AgenDao")
 public class AgenDao extends CommonDao{
 	
-	@SuppressWarnings("unchecked")
-	@Transactional
-	public Agen findById(String id){
-		List<Agen> list = super.entityManager
-				.createQuery("FROM Agen WHERE idAgen=:id")
-				.setParameter("id", id)
-				.getResultList();
-		if (list.size() > 0) {
-			return list.get(0);
-		} else {
-			return new Agen();
+//	@SuppressWarnings("unchecked")
+//	@Transactional
+//	public Agen findById(String id){
+//		List<Agen> list = super.entityManager
+//				.createQuery("FROM Agen WHERE idAgen=:id")
+//				.setParameter("id", id)
+//				.getResultList();
+//		if (list.size() > 0) {
+//			return list.get(0);
+//		} else {
+//			return new Agen();
+//		}
+//	}
+	
+	public Agen findById(String id) {
+		Agen agen = super.entityManager.find(Agen.class,id);
+		if (agen ==  null) {
+				throw new EntityNotFoundException("Agen tidak ditemukan"+id);
 		}
+		return agen;
 	}
+	
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Agen findByAccount(AccountV2 accountV2){

@@ -5,6 +5,7 @@ package LinovSupport.Ticketing.model;
 
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,8 +47,8 @@ public class AccountV2 {
 	@Column(name = "isactive")
 	private boolean active;
 	
-	@OneToMany(mappedBy = "account", targetEntity = PicV2.class, 
-			fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@Basic(fetch= FetchType.LAZY)
+	@OneToMany(mappedBy = "account", targetEntity = PicV2.class,cascade = CascadeType.REMOVE)
 	private List<PicV2> pics;
 	
 	public String getIdAccount() {

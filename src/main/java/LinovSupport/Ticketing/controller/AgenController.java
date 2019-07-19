@@ -353,12 +353,13 @@ public class AgenController {
 	}
 	@GetMapping("id/{id}")
 	public ResponseEntity<?> findById(@PathVariable String id){
-		Agen agen = agenService.findById(id);
-		AccountV2 account = new AccountV2();
-		account.setIdAccount(agen.getAccount().getIdAccount());
-		account.setNama(agen.getAccount().getNama());
-		agen.setAccount(account);
-		return ResponseEntity.ok(agen);
+//		Agen agen = agenService.findById(id);
+//		AccountV2 account = new AccountV2();
+//		account.setIdAccount(agen.getAccount().getIdAccount());
+//		account.setNama(agen.getAccount().getNama());
+//		agen.setAccount(account);
+//		return ResponseEntity.ok(agen);
+		return ResponseEntity.ok(agenService.findById(id));
 	}
 	@GetMapping("")
 	public ResponseEntity<?> findAll(){

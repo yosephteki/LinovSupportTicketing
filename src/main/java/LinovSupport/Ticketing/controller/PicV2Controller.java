@@ -48,7 +48,7 @@ public class PicV2Controller {
 	private UserService userService;
 
 	private BCrypt bc;
-
+	
 	@PostMapping("")
 	public ResponseEntity<?> insertPic(@RequestBody Multi pic) throws ErrorException {
 		String msgs;
@@ -74,6 +74,7 @@ public class PicV2Controller {
 			user.setIdRole(pic.getRole());
 			user.setDetailRole(newPic.getIdPic());
 			userService.insertUser(user);
+			
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");

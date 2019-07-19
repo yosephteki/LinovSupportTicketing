@@ -28,7 +28,7 @@ public class Agen {
 	private String idAgen;
 	
 	@OneToOne
-	@JoinColumn(name="id_account",referencedColumnName="id_account")
+	@JoinColumn(name="id_account",referencedColumnName="id_account" )
 	private AccountV2 account;
 	
 	@Column(name="email")
